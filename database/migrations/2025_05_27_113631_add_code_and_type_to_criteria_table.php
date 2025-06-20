@@ -13,18 +13,19 @@ return new class extends Migration
      */
    public function up()
 {
-    if (!Schema::hasColumn('criteria', 'code') || !Schema::hasColumn('criteria', 'type')) {
+    if (!Schema::hasColumn('criteria', 'code')) {
         Schema::table('criteria', function (Blueprint $table) {
-            if (!Schema::hasColumn('criteria', 'code')) {
-                $table->string('code')->after('name');
-            }
+            $table->string('code')->after('name');
+        });
+    }
 
-            if (!Schema::hasColumn('criteria', 'type')) {
-                $table->enum('type', ['benefit', 'cost'])->after('weight');
-            }
+    if (!Schema::hasColumn('criteria', 'type')) {
+        Schema::table('criteria', function (Blueprint $table) {
+            $table->enum('type', ['benefit', 'cost'])->after('weight');
         });
     }
 }
+
 
 
     /**
