@@ -11,18 +11,21 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+   public function up()
 {
-    Schema::table('criteria', function (Blueprint $table) {
-        if (!Schema::hasColumn('criteria', 'code')) {
-            $table->string('code')->after('name');
-        }
+    if (!Schema::hasColumn('criteria', 'code') || !Schema::hasColumn('criteria', 'type')) {
+        Schema::table('criteria', function (Blueprint $table) {
+            if (!Schema::hasColumn('criteria', 'code')) {
+                $table->string('code')->after('name');
+            }
 
-        if (!Schema::hasColumn('criteria', 'type')) {
-            $table->enum('type', ['benefit', 'cost'])->after('weight');
-        }
-    });
+            if (!Schema::hasColumn('criteria', 'type')) {
+                $table->enum('type', ['benefit', 'cost'])->after('weight');
+            }
+        });
+    }
 }
+
 
     /**
      * Reverse the migrations.
