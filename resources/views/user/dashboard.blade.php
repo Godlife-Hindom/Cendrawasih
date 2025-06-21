@@ -4,7 +4,7 @@
 {{-- Toast Notification --}}
 @if(session('success'))
     <div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container">
-        <div class="toast align-items-center text-white bg-gradient-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+        <div class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
             <div class="d-flex">
                 <div class="toast-body fw-semibold">
                     <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
