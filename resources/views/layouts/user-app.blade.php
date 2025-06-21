@@ -18,6 +18,7 @@
       --dark-secondary: #16213e;
       --light-bg: #f8f9fa;
       --accent-color: #00f2fe;
+      --accent-color1: #fff;
       --text-muted: #a0a0a0;
     }
 
@@ -261,8 +262,8 @@
       position: absolute;
       top: 25px;
       right: -15px;
-      background: white;
-      color: #667eea;
+      background: black;
+      color: whitesmoke;
       width: 30px;
       height: 30px;
       border-radius: 50%;
@@ -284,6 +285,36 @@
       font-size: 16px;
       margin: 0;
       transition: transform 0.3s ease;
+    }
+
+    /* Mobile Toggle Button */
+    .mobile-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px; /* pindah ke kanan */
+      left: auto; /* reset left */
+      z-index: 1100;
+      background: var(--accent-color1) !important;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .mobile-toggle i {
+      font-size: 20px;
+      color: black !important;
+      margin: 0;
     }
 
     /* Dark Mode Toggle */
@@ -452,11 +483,32 @@ body.dark-mode .navbar-custom {
     .sidebar a:nth-child(3) { animation-delay: 0.3s; }
     .sidebar a:nth-child(4) { animation-delay: 0.4s; }
 
+    /* Overlay untuk mobile */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .sidebar {
         left: -280px;
         position: fixed;
+        top: 0;
+        height: 100vh;
       }
 
       .sidebar.show {
@@ -468,12 +520,53 @@ body.dark-mode .navbar-custom {
         width: 100% !important;
       }
 
+      .mobile-toggle {
+        display: flex;
+      }
+
       .toggle-sidebar {
-        left: 20px;
-        top: 20px;
-        z-index: 1100;
-        background: var(--primary-gradient);
-        color: white;
+        display: none;
+      }
+
+      /* Adjust content header untuk mobile */
+      .content-header {
+        margin-top: 0;
+        border-radius: 0 0 20px 20px;
+      }
+
+      .welcome-title {
+        font-size: 1.5rem;
+      }
+
+      .welcome-subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      
+
+      .content-header {
+        padding: 1.5rem;
+      }
+
+      .content-body {
+        padding: 1.5rem;
+      }
+
+      .welcome-title {
+        font-size: 1.3rem;
+      }
+
+      .mobile-toggle {
+        width: 45px;
+        height: 45px;
+        top: 12px;
+        right: 12px;
+      }
+
+      .mobile-toggle i {
+        font-size: 25px;
       }
     }
 
@@ -503,14 +596,16 @@ body.dark-mode .navbar-custom {
     }
   </style>
 </head>
-<body class="{{ session('darkMode') === 'enabled' ? 'dark-mode' : '' }}">
+<body class="dark-mode-enabled">
+  <!-- Mobile Toggle Button -->
+  <button class="btn btn-success mobile-toggle" onclick="toggleResponsiveSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Overlay untuk mobile -->
+  <div class="overlay" id="overlay" onclick="toggleResponsiveSidebar()"></div>
+
   <div class="sidebar" id="sidebar">
-    <!-- Toggle Mobile Button (tampil di HP) -->
-<button class="btn btn-primary d-md-none mobile-toggle" onclick="toggleResponsiveSidebar()">
-  <i class="bi bi-list"></i>
-</button>
-
-
     <div class="profile">
       <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('images/pp.png') }}" alt="Profil">
       <h5>{{ Auth::user()->name }}</h5>
@@ -538,6 +633,7 @@ body.dark-mode .navbar-custom {
     </p>
     </header>
 
+    <div class="content-body">
     @yield('content')
 
     @if(session('warning'))
@@ -546,6 +642,7 @@ body.dark-mode .navbar-custom {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     @endif
+    </div>
   </div>
 
   <div class="toast-container"></div>
@@ -556,8 +653,10 @@ body.dark-mode .navbar-custom {
       const sidebar = document.getElementById('sidebar');
       const icon = document.getElementById('toggleIcon');
       sidebar.classList.toggle('collapsed');
-      icon.classList.toggle('bi-chevron-left');
-      icon.classList.toggle('bi-chevron-right');
+      if (icon) {
+        icon.classList.toggle('bi-chevron-left');
+        icon.classList.toggle('bi-chevron-right');
+      }
     }
 
     function toggleDarkMode() {
@@ -571,15 +670,67 @@ body.dark-mode .navbar-custom {
 
     function toggleResponsiveSidebar() {
       const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('show');
+      const overlay = document.getElementById('overlay');
+      const isShowing = sidebar.classList.contains('show');
+      
+      if (isShowing) {
+        // Tutup sidebar
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = 'auto';
+      } else {
+        // Buka sidebar
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
     }
+
+    // Tutup sidebar ketika klik di luar (pada overlay)
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const overlay = document.getElementById('overlay');
+      
+      // Jika sidebar sedang terbuka dan klik bukan pada sidebar atau toggle button
+      if (sidebar.classList.contains('show') && 
+          !sidebar.contains(e.target) && 
+          !mobileToggle.contains(e.target)) {
+        toggleResponsiveSidebar();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      
+      if (window.innerWidth > 768) {
+        // Desktop mode - tutup mobile sidebar jika terbuka
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+    });
 
     // Load dark mode from localStorage
     if (localStorage.getItem('darkMode') === 'enabled') {
       document.body.classList.add('dark-mode');
     }
-  </script>
 
+    // Prevent body scroll when sidebar is open on mobile
+    function preventBodyScroll() {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show') && window.innerWidth <= 768) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    // Call prevent body scroll on page load
+    document.addEventListener('DOMContentLoaded', preventBodyScroll);
+  </script>
   @stack('scripts')
 </body>
 </html>
