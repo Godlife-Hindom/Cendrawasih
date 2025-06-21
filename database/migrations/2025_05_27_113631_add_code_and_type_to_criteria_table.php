@@ -12,15 +12,21 @@ return new class extends Migration
      * @return void
      */
    public function up()
-{
-    if (!Schema::hasColumn('criteria', 'code')) {
-        Schema::table('criteria', function (Blueprint $table) {
-            $table->string('code')->after('name');
-        });
-    }
+    {
+        // Tambahkan kolom 'code' jika belum ada
+        if (!Schema::hasColumn('criteria', 'code')) {
+            Schema::table('criteria', function (Blueprint $table) {
+                $table->string('code')->after('name');
+            });
+        }
 
-    // Jangan tambahkan lagi kolom 'type' karena sudah ada
-}
+        // Tambahkan kolom 'type' jika belum ada
+        if (!Schema::hasColumn('criteria', 'type')) {
+            Schema::table('criteria', function (Blueprint $table) {
+                $table->enum('type', ['benefit', 'cost'])->after('weight');
+            });
+        }
+    }
 
 
 
@@ -30,11 +36,15 @@ return new class extends Migration
      * @return void
      */
     public function down()
-{
-    Schema::table('criteria', function (Blueprint $table) {
-        if (Schema::hasColumn('criteria', 'code')) {
-            $table->dropColumn('code');
-        }
-    });
-}
+    {
+        Schema::table('criteria', function (Blueprint $table) {
+            if (Schema::hasColumn('criteria', 'code')) {
+                $table->dropColumn('code');
+            }
+
+            if (Schema::hasColumn('criteria', 'type')) {
+                $table->dropColumn('type');
+            }
+        });
+    }
 };
