@@ -170,7 +170,6 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     padding: 2rem 0;
-    position: sticky;
     top: 0;
     z-index: 1000;
 }
@@ -238,7 +237,6 @@
     background: white;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border-color);
-    position: sticky;
     top: 120px;
     z-index: 999;
 }
