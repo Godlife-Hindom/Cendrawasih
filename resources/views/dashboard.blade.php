@@ -12,6 +12,10 @@
                             <h1 class="display-6 fw-bold mb-2">
                                 <i class="bi bi-graph-up-arrow me-3"></i>Selamat Datang, {{ Auth::user()->name }}
                             </h1>
+                            <p class="welcome-subtitle">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} | Dashboard Admin
+                            </p>
                             <h4 class="fw-light mb-3 opacity-90">Penangkaran Cendrawasih Kabupaten Fakfak</h4>
                             <p class="mb-0 opacity-75">Sistem Pendukung Keputusan berbasis Metode ARAS & Visualisasi GIS</p>
                         </div>
