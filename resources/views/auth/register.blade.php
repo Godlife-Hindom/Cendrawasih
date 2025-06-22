@@ -99,8 +99,6 @@
                     <select id="role" name="role" required
                             class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 shadow-sm">
                         <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        <option value="pimpinan">Pimpinan</option>
                     </select>
                     @error('role')
                         <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
