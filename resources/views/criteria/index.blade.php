@@ -12,12 +12,12 @@
                 </h1>
                 <p class="page-subtitle">Kelola kriteria penilaian untuk sistem evaluasi Anda</p>
             </div>
-            <div class="header-actions">
+            <!-- <div class="header-actions">
                 <a href="{{ route('criteria.create') }}" class="btn-primary">
                     <i class="fas fa-plus"></i>
                     Tambah Kriteria Baru
                 </a>
-            </div>
+            </div> -->
         </div>
 
         <!-- Success Alert -->
