@@ -126,6 +126,7 @@
             font-size: 1.5rem;
             margin-right: 1rem;
             color: inherit;
+            display: none; /* Hidden by default on desktop */
         }
 
         .dark-toggle {
@@ -187,15 +188,16 @@
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
-                height: auto;
+                height: 50vh;
                 position: fixed;
                 top: 0;
                 left: 0;
-                transform: translateY(-100%);
+                transform: translateX(-100%);
+                z-index: 1050;
             }
 
             .sidebar.mobile-visible {
-                transform: translateY(0);
+                transform: translateX(0);
             }
 
             .main-content {
@@ -203,19 +205,37 @@
                 padding: 1rem;
             }
 
-            .navbar-profile {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
+            .toggle-btn {
+                display: block; /* Show toggle button on mobile */
             }
 
-            .toggle-btn {
-                margin: 0 0 1rem 0;
+            .navbar-profile {
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
             }
 
             .dark-toggle {
                 position: static;
                 margin-top: 1rem;
+            }
+        }
+
+        /* Overlay for mobile when sidebar is open */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-overlay.show {
+                display: block;
             }
         }
     </style>
@@ -225,12 +245,17 @@
 
 <div class="wrapper">
 
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="text-center mb-4 logo">
             <img src="{{ asset('images/pp.png') }}" alt="Logo">
-            <h6 class="text-primary">SPK Cendrawasih</h6>
+            <h5 class="text-primary">{{ Auth::user()->name }}</h5>
+            <h6 class="text-black">Dashboard Admin</h6>
         </div>
+
 
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i><span>Dashboard</span>
@@ -260,7 +285,16 @@
 
     <!-- Main Content -->
     <div class="main-content">
-    
+        
+        <!-- Mobile Toggle Button -->
+        <div class="navbar-profile">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="d-flex align-items-center">
+                <!-- Profile content can go here -->
+            </div>
+        </div>
 
         @yield('content')
     </div>
@@ -282,8 +316,33 @@
     // Sidebar Toggle (Mobile)
     document.getElementById('toggleSidebar').addEventListener('click', () => {
         const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
         sidebar.classList.toggle('mobile-visible');
+        overlay.classList.toggle('show');
     });
+
+    // Close sidebar when clicking overlay
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        sidebar.classList.remove('mobile-visible');
+        overlay.classList.remove('show');
+    });
+
+    // Close sidebar when clicking on menu items (mobile)
+    if (window.innerWidth <= 768) {
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                sidebar.classList.remove('mobile-visible');
+                overlay.classList.remove('show');
+            });
+        });
+    }
 </script>
 @stack('scripts')
 </body>
