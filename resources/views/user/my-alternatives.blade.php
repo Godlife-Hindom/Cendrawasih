@@ -14,12 +14,12 @@
 
         <a href="{{ route('user.alternatives.create') }}" 
         class="btn btn-primary btn-lg w-1 rounded-pill shadow-sm">
-        <i class="bi bi-plus-lg me-2"></i>Tambah Alternatif
+        <i class="bi bi-plus-lg me-2"></i>Tambah Lokasi
         </a>
         <form action="{{ route('user.calculate.aras') }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-warning btn-lg px-3 py-2 rounded-pill shadow-sm fw-semibold">
-                    <i class="bi bi-play-fill me-2"></i>Mulai Perhitungan ARAS
+                    <i class="bi bi-play-fill me-2"></i>Lihat Hasil
                 </button>
         </form>
     </div>
