@@ -838,7 +838,7 @@
             console.error('Error:', error);
             // Fallback dengan data simulasi
             simulateEnvironmentalData();
-            mapStatus.textContent = 'Menggunakan data simulasi';
+            mapStatus.textContent = 'Menggunakan data API';
             statusIndicator.style.background = '#fdbb2d';
         })
         .finally(() => {
