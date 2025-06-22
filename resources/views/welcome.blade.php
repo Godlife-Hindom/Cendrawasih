@@ -109,6 +109,40 @@
         radial-gradient(circle at 75% 75%, rgba(34,197,94,0.1) 0%, transparent 50%);
     }
     
+    /* Mobile Menu Styles */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    
+    .mobile-overlay {
+    background-color: #fff; /* putih */
+    opacity: 1;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+}
+
+  .mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+    
+    .hamburger {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .hamburger.active {
+      transform: rotate(45deg);
+    }
+    
     @media (max-width: 768px) {
       .parallax {
         background-size: 200px;
@@ -127,6 +161,9 @@
   <!-- Background Parallax -->
   <div class="parallax"></div>
 
+  <!-- Mobile Overlay -->
+  <div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-wihte bg-opacity-50 z-20 md:hidden"></div>
+
   <!-- Navigation Bar -->
   <nav class="fixed top-0 w-full z-50 glass" data-aos="fade-down">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,7 +181,30 @@
         </a>
         </div>
         <div class="md:hidden">
-          <button class="text-2xl">☰</button>
+          <button id="mobileToggle" class="hamburger text-2xl focus:outline-none">☰</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-64 glass backdrop-blur-xl z-50 md:hidden">
+      <div class="flex flex-col h-full">
+        <div class="flex justify-between items-center p-4 border-b border-white/20">
+          <div class="text-lg font-bold text-gradient">Menu</div>
+          <button id="mobileClose" class="text-2xl focus:outline-none">✕</button>
+        </div>
+        <div class="flex flex-col space-y-4 p-6">
+          <a href="#home" class="mobile-link hover:text-blue-600 transition-colors py-2 border-b border-white/10">Beranda</a>
+          <a href="#fitur" class="mobile-link hover:text-blue-600 transition-colors py-2 border-b border-white/10">Fitur</a>
+          <a href="#about" class="mobile-link hover:text-blue-600 transition-colors py-2 border-b border-white/10">Tentang</a>
+          <div class="pt-4 space-y-3">
+            <a href="/login" class="block btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-3 rounded-full font-semibold transition-all shadow-lg text-center">
+              Login
+            </a>
+            <a href="/register" class="block btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-3 rounded-full font-semibold transition-all shadow-lg text-center">
+              Daftar
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -277,34 +337,105 @@
   <!-- AOS Script -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // Initialize AOS
     AOS.init({
       once: true,
       duration: 1000,
       easing: 'ease-out-cubic'
     });
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+    // Mobile Menu Toggle Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.getElementById('mobileToggle');
+      const mobileClose = document.getElementById('mobileClose');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      function openMobileMenu() {
+        mobileMenu.classList.add('active');
+        mobileOverlay.classList.add('active');
+        mobileToggle.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        mobileToggle.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Event listeners for mobile menu
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          openMobileMenu();
+        });
+      }
+
+      if (mobileClose) {
+        mobileClose.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeMobileMenu();
+        });
+      }
+
+      if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeMobileMenu();
+        });
+      }
+
+      // Close menu when clicking on mobile links
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          closeMobileMenu();
+        });
+      });
+
+      // Close menu on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeMobileMenu();
         }
       });
-    });
 
-    // Navbar background change on scroll
-    window.addEventListener('scroll', function() {
-      const nav = document.querySelector('nav');
-      if (window.scrollY > 50) {
-        nav.style.background = 'rgba(255, 255, 255, 0.15)';
-      } else {
-        nav.style.background = 'rgba(255, 255, 255, 0.05)';
-      }
+      // Close menu on window resize if opened
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+          closeMobileMenu();
+        }
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Navbar background change on scroll
+      window.addEventListener('scroll', function() {
+        const nav = document.querySelector('nav');
+        if (nav) {
+          if (window.scrollY > 50) {
+            nav.style.background = 'rgba(255, 255, 255, 0.15)';
+          } else {
+            nav.style.background = 'rgba(255, 255, 255, 0.05)';
+          }
+        }
+      });
     });
   </script>
 </body>
