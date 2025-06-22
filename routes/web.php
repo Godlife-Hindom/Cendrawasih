@@ -15,6 +15,7 @@ use App\Http\Controllers\SubcriteriaController;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\UserCriteriaController;
 
 Route::middleware(['auth', 'is_pimpinan'])->prefix('pimpinan')->group(function () {
     Route::get('/dashboard', [PimpinanController::class, 'index'])->name('pimpinan.dashboard');
@@ -95,6 +96,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'is_user'])->prefix('user')->name('user.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+
+    //kriteia
+    Route::get('/user/criteria', [UserCriteriaController::class, 'index'])->name('criteria.index');
 
     // Alternatif lokasi
     Route::get('/alternatives', [UserAlternativeController::class, 'index'])->name('alternatives.index');

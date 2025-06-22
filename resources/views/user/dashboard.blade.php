@@ -315,7 +315,7 @@
 @push('styles')
 <style>
     .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #f8f9fa 0%, rgba(0, 0, 0, 0.075) 100%);;
         border-radius: 20px;
         margin-bottom: 2rem;
     }
@@ -335,7 +335,7 @@
     }
 
     .action-card {
-        background: rgba(0, 0, 0, 0.55);
+        background: rgba(0, 0, 0, 0.05);
         border-radius: 15px;
         transition: all 0.3s ease;
     }

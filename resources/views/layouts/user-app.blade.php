@@ -595,6 +595,7 @@ body.dark-mode .navbar-custom {
       background: rgba(255,255,255,0.5);
     }
   </style>
+  @stack('styles')
 </head>
 <body class="dark-mode-enabled">
   <!-- Mobile Toggle Button -->
@@ -613,8 +614,11 @@ body.dark-mode .navbar-custom {
 
     <a href="{{ url('/user/dashboard') }}"><i class="bi bi-house-door"></i> <span>Dashboard</span></a>
     <a href="{{ url('/user/alternatives/create') }}"><i class="bi bi-plus-circle"></i> <span>Tambah Lokasi</span></a>
+    <!-- Menu Baru: Lihat Kriteria -->
+    <a href="{{ route('user.criteria.index') }}"><i class="bi bi-sliders"></i> <span>Data Kriteria</span></a>
     <a href="{{ url('/user/alternatives') }}"><i class="bi bi-list-task"></i> <span>Data Alternatif</span></a>
     <a href="{{ url('/user/view-map') }}"><i class="bi bi-geo-alt-fill"></i> <span>Peta Rekomendasi</span></a>
+    
 
     <form action="{{ url('/logout') }}" method="POST">
       @csrf
@@ -623,7 +627,7 @@ body.dark-mode .navbar-custom {
   </div>
 
   <div class="main-content" id="mainContent">
-  <header class="content-header">
+    <header class="content-header">
     <h1 class="welcome-title">
     <i class="fas fa-user-tie me-3"></i>Selamat Datang, {{ Auth::user()->name }}
     </h1>
