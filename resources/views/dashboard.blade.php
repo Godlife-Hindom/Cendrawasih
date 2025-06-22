@@ -158,8 +158,8 @@
                                 <div class="d-flex align-items-center justify-content-center">
                                     <i class="bi bi-geo-alt-fill fs-4 me-3"></i>
                                     <div class="text-start">
-                                        <div class="fw-semibold">Kelola Alternatif</div>
-                                        <small class="text-muted">Manage lokasi penangkaran</small>
+                                        <div class="fw-semibold">Lihat Alternatif</div>
+                                        <small class="text-muted">Data lokasi penangkaran</small>
                                     </div>
                                 </div>
                             </a>
