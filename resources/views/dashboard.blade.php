@@ -431,7 +431,7 @@
     const ctx = document.getElementById('scoreChart').getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
-    gradient.addColorStop(1, 'rgba(54, 162, 235, 0.2)');
+    gradient.addColorStop(1, 'rgba(54, 162, 235, 0.5)');
 
     new Chart(ctx, {
         type: 'doughnut',
