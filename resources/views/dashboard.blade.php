@@ -64,7 +64,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
                             <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                                <i class="bi bi-sliders2-vertical fs-4 text-success"></i>
+                                <i class="bi bi-funnel fs-4 text-success"></i>
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
@@ -86,6 +86,30 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
+                            <div class="bg-danger bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-sliders2-vertical fs-4 text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="text-muted mb-1 fw-semibold">Total Subkriteria</h6>
+                                    <h3 class="mb-0 fw-bold text-danger">{{ $subcriteriaCount }}</h3>
+                                    <small class="text-muted">Parameter analisis</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
                             <div class="bg-warning bg-opacity-10 rounded-circle p-3">
                                 <i class="bi bi-trophy-fill fs-4 text-warning"></i>
                             </div>
@@ -96,6 +120,52 @@
                                     <h6 class="text-muted mb-1 fw-semibold">Top Ranking</h6>
                                     <h3 class="mb-0 fw-bold text-warning">{{ count($topAlternatives) }}</h3>
                                     <small class="text-muted">Lokasi terbaik</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-black bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-receipt fs-4 text-purple"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="text-muted mb-1 fw-semibold">Total Laporan</h6>
+                                    <h3 class="mb-0 fw-bold text-purple-light">{{ $laporanCount }}</h3>
+                                    <small class="text-muted">Laporan User</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                                <i class="bi bi-send-fill fs-4 text-warning"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="text-muted mb-1 fw-semibold">Total Report</h6>
+                                    <h3 class="mb-0 fw-bold text-warning">{{ $reportCount }}</h3>
+                                    <small class="text-muted">Kirim Laporan User</small>
                                 </div>
                             </div>
                         </div>
@@ -127,6 +197,8 @@
             </div>
         </div>
     </div>
+
+    
 
     {{-- Quick Access Section --}}
     <div class="row mb-4">

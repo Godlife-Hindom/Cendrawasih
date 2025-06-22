@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Alternative;
 use App\Models\Criteria;
+use App\Models\Subcriteria;
+use App\Models\Laporan;
 use App\Models\User;
 use App\Services\ARASService;
 use Illuminate\Http\Request;
@@ -26,6 +28,9 @@ class DashboardController extends Controller
 
         // Ambil semua kriteria
         $criteria = Criteria::all();
+        $subcriteria = Subcriteria::all();
+        $laporan = Laporan::all();
+        $report = Report::all();
         $weights = [];
         foreach ($criteria as $c) {
             $weights[strtolower($c->name)] = $c->weight;
@@ -63,6 +68,9 @@ class DashboardController extends Controller
         return view('dashboard', [
             'alternativesCount' => $alternativeModels->count(),
             'criteriaCount' => $criteria->count(),
+            'subcriteriaCount' => $subcriteria->count(),
+            'laporanCount' => $laporan->count(),
+            'reportCount' => $report->count(),
             'topAlternatives' => $topAlternatives,
             'users' => $users,
             'selectedUserId' => $userId,
