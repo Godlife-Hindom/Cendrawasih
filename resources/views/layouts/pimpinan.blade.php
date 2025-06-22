@@ -243,47 +243,123 @@
 
         .content-body {
             padding: 2.5rem;
-            background: black;
+            background: whitesmoke;
+        }
+
+        /* Mobile Toggle Button - Always visible */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 12px;
+            z-index: 10001;
+            background: #fff;
+            color: black;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-size: 1.2rem;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        .mobile-toggle:active {
+            transform: scale(0.55);
+        }
+
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+            opacity: 1;
         }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+            }
+
             .sidebar {
-                width: 100%;
                 position: fixed;
                 top: 0;
                 left: -100%;
-                height: 100vh;
-                z-index: 9999;
-                transition: left 0.3s ease;
+                height: 40vh;
+                z-index: 10000;
+                transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
             }
 
             .sidebar.show {
                 left: 0;
             }
 
+            .main-container {
+                flex-direction: column;
+            }
+
             .content {
                 margin: 0;
                 border-radius: 0;
+                margin-top: 0;
             }
 
-            .mobile-toggle {
-                display: block;
-                position: fixed;
-                top: 1rem;
-                left: 1rem;
-                z-index: 10000;
-                background: #2a5298;
-                color: black;
-                border: none;
-                padding: 0.75rem;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            .content-header {
+                padding-top: 4rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 1rem;
             }
         }
 
-        .mobile-toggle {
-            display: none;
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+            }
+
+            .content-header {
+                padding: 3rem 1.5rem 2rem;
+            }
+
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .sidebar-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .sidebar-title {
+                font-size: 1.3rem;
+            }
         }
 
         /* Decorative Elements */
@@ -327,9 +403,13 @@
     </style>
 </head>
 <body>
+    <!-- Mobile Toggle Button -->
     <button class="mobile-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
     <div class="main-container">
         <!-- Enhanced Sidebar -->
@@ -344,43 +424,41 @@
             </div>
 
             <div class="sidebar-nav">
-            <div class="nav-item">
-    <a href="{{ route('pimpinan.dashboard') }}"
-       class="nav-link {{ request()->is('pimpinan/dashboard*') ? 'active' : '' }}">
-        <div class="nav-icon">
-            <i class="fas fa-tachometer-alt"></i>
-        </div>
-        <span class="nav-text">Dashboard</span>
-    </a>
-</div>
+                <div class="nav-item">
+                    <a href="{{ route('pimpinan.dashboard') }}"
+                       class="nav-link {{ request()->is('pimpinan/dashboard*') ? 'active' : '' }}">
+                        <div class="nav-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </div>
 
-<div class="nav-item">
-    <a href="{{ route('pimpinan.laporan') }}"
-       class="nav-link {{ request()->is('pimpinan/laporan*') ? 'active' : '' }}">
-        <div class="nav-icon">
-            <i class="fas fa-file-alt"></i>
-        </div>
-        <span class="nav-text">Laporan</span>
-    </a>
-</div>
+                <div class="nav-item">
+                    <a href="{{ route('pimpinan.laporan') }}"
+                       class="nav-link {{ request()->is('pimpinan/laporan*') ? 'active' : '' }}">
+                        <div class="nav-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <span class="nav-text">Laporan</span>
+                    </a>
+                </div>
                 
                 <div class="nav-item">
-                <a href="{{ route('logout') }}"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="logout-link" onclick="handleLogout(event)">
-                    <div class="nav-icon">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </div>
-                    <span class="nav-text">Keluar</span>
-                </a>
-                
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                       class="logout-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-text">Keluar</span>
+                    </a>
+                    
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
             </div>
-
-            </div>
-
-            
         </nav>
 
         <!-- Main Content -->
@@ -395,23 +473,48 @@
                     {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} | Dashboard Pimpinan
                 </p>
             </header>
+            
+            <div class="content-body">
                 <!-- Dashboard Content -->
                 @yield('content')
-            
+            </div>
         </main>
     </div>
-
-    <!-- Hidden logout form -->
-    <form id="logout-form" action="#" method="POST" class="d-none">
-        <!-- Add CSRF token here if using Laravel -->
-    </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Toggle sidebar for mobile
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('show');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar.classList.contains('show')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.add('show');
+            overlay.classList.add('show');
+            
+            // Prevent body scroll when sidebar is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
         }
 
         // Handle logout
@@ -425,6 +528,13 @@
         // Add smooth animations for nav links
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
+                // On mobile, close sidebar when nav link is clicked
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        closeSidebar();
+                    }, 200);
+                }
+                
                 // Remove active class from all links
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 // Add active class to clicked link
@@ -432,26 +542,25 @@
             });
         });
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const toggleBtn = document.querySelector('.mobile-toggle');
-            
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
-                    sidebar.classList.remove('show');
-                }
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
             }
         });
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('show');
+        // Handle escape key to close sidebar
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && window.innerWidth <= 768) {
+                closeSidebar();
             }
         });
+
+        // Prevent clicks inside sidebar from closing it
+        document.getElementById('sidebar').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     </script>
- @stack('scripts')
+    @stack('scripts')
 </body>
 </html>
