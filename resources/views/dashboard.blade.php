@@ -226,7 +226,7 @@
         {{-- Top 5 Locations --}}
         <div class="col-lg-8 mb-4">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-header border-0 py-3" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                <div class="card-header border-0 py-3" style="background: linear-gradient(135deg, #667eea 0%, #a7f3d0 100%);">
                     <div class="d-flex align-items-center">
                         <div class="bg-white bg-opacity-50 rounded-circle p-2 me-3">
                             <i class="bi bi-star-fill text-warning"></i>
