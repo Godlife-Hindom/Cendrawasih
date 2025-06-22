@@ -11,6 +11,17 @@
             </h2>
             <p class="text-muted mb-0">Kelola dan pantau lokasi alternatif yang telah Anda tambahkan</p>
         </div>
+
+        <a href="{{ route('user.alternatives.create') }}" 
+        class="btn btn-primary btn-lg w-1 rounded-pill shadow-sm">
+        <i class="bi bi-plus-lg me-2"></i>Tambah Alternatif
+        </a>
+        <form action="{{ route('user.calculate.aras') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-warning btn-lg px-3 py-2 rounded-pill shadow-sm fw-semibold">
+                    <i class="bi bi-play-fill me-2"></i>Mulai Perhitungan ARAS
+                </button>
+        </form>
     </div>
 
     <!-- Success Alert -->
