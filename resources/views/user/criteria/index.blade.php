@@ -396,28 +396,41 @@
     .criteria-title {
         font-size: 1.4rem;
     }
+    
+    .weight-value {
+        font-size: 1.6rem;
+    }
 }
 
 @media (max-width: 992px) {
     .page-header {
         padding: 1.75rem;
-    }
-    
-    .page-header .row {
         text-align: center;
     }
     
-    .page-header .col-md-4 {
-        margin-top: 1rem;
+    .page-header .d-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .icon-wrapper {
+        margin: 0 auto;
     }
     
     .stats-badge {
-        text-align: center;
+        margin-top: 1rem;
     }
     
     .header-content .row {
-        flex-direction: column;
         text-align: center;
+    }
+    
+    .header-content .col-md-8,
+    .header-content .col-md-4 {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
     }
     
     .header-content .col-md-4 {
@@ -426,7 +439,12 @@
     
     .weight-display {
         display: inline-block;
-        min-width: 120px;
+        min-width: 140px;
+    }
+    
+    .criteria-meta {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
 
@@ -438,27 +456,32 @@
     .page-header {
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-    }
-    
-    .page-header .d-flex {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-    
-    .icon-wrapper {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto;
+        border-radius: 15px;
     }
     
     .page-title {
         font-size: 1.8rem;
         line-height: 1.2;
+        margin-bottom: 0.75rem;
     }
     
     .page-subtitle {
         font-size: 1rem;
+        line-height: 1.4;
+    }
+    
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .icon-wrapper i {
+        font-size: 1.8rem !important;
+    }
+    
+    .stats-badge .badge {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
     }
     
     .header-content {
@@ -468,7 +491,6 @@
     .criteria-number {
         width: 40px;
         height: 40px;
-        margin: 0 auto 1rem;
     }
     
     .number-badge {
@@ -477,13 +499,10 @@
     
     .criteria-title {
         font-size: 1.3rem;
-        text-align: center;
         margin-bottom: 1rem;
     }
     
     .criteria-meta {
-        justify-content: center;
-        flex-wrap: wrap;
         gap: 0.5rem;
     }
     
@@ -495,6 +514,7 @@
     .weight-display {
         margin-top: 1.5rem;
         padding: 0.8rem;
+        min-width: 120px;
     }
     
     .weight-value {
@@ -508,7 +528,6 @@
     
     .table-responsive {
         font-size: 0.85rem;
-        margin: 0 -15px;
     }
     
     .table-header th {
@@ -536,18 +555,6 @@
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
     }
-    
-    .empty-state {
-        padding: 2rem 1rem;
-    }
-    
-    .empty-icon {
-        font-size: 2.5rem;
-    }
-    
-    .empty-title {
-        font-size: 1.1rem;
-    }
 }
 
 @media (max-width: 576px) {
@@ -557,11 +564,11 @@
     
     .page-header {
         padding: 1.25rem;
-        border-radius: 15px;
+        border-radius: 12px;
     }
     
     .page-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         margin-bottom: 0.75rem;
     }
     
@@ -580,17 +587,26 @@
     }
     
     .stats-badge .badge {
-        font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
     }
     
     .criteria-card {
-        border-radius: 15px;
+        border-radius: 12px;
         margin-bottom: 1rem;
     }
     
     .header-content {
         padding: 1.25rem 0.75rem;
+    }
+    
+    .criteria-number {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .number-badge {
+        font-size: 0.9rem;
     }
     
     .criteria-title {
@@ -610,6 +626,7 @@
     .weight-display {
         padding: 0.75rem;
         border-radius: 10px;
+        min-width: 100px;
     }
     
     .weight-label {
@@ -620,34 +637,21 @@
         font-size: 1.3rem;
     }
     
+    .subcriteria-header {
+        padding: 0.75rem;
+    }
+    
     .subcriteria-header h6 {
         font-size: 0.9rem;
     }
     
     .table-responsive {
         font-size: 0.8rem;
-        border-radius: 0;
     }
     
     .table-header th {
         padding: 0.6rem 0.3rem;
-        font-size: 0.75rem;
-    }
-    
-    .table-header th:first-child {
-        width: 12%;
-    }
-    
-    .table-header th:nth-child(2) {
-        width: 38%;
-    }
-    
-    .table-header th:nth-child(3) {
-        width: 25%;
-    }
-    
-    .table-header th:last-child {
-        width: 25%;
+        font-size: 0.7rem;
     }
     
     .subcriteria-row td {
@@ -658,7 +662,7 @@
     .row-number {
         width: 22px;
         height: 22px;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
     
     .subcriteria-name {
@@ -672,12 +676,10 @@
     
     .range-badge,
     .score-badge {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         padding: 0.3rem 0.6rem;
-        border-radius: 12px;
-        display: block;
-        text-align: center;
-        line-height: 1.2;
+        border-radius: 8px;
+        word-break: break-word;
     }
     
     .score-badge {
@@ -699,28 +701,11 @@
     .empty-subtitle {
         font-size: 0.85rem;
     }
-    
-    .empty-state-main {
-        padding: 2.5rem 1rem;
-        border-radius: 15px;
-    }
-    
-    .empty-icon-main {
-        font-size: 3rem;
-    }
-    
-    .empty-title-main {
-        font-size: 1.2rem;
-    }
-    
-    .empty-subtitle-main {
-        font-size: 0.95rem;
-    }
 }
 
 @media (max-width: 480px) {
     .page-title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
     
     .criteria-title {
@@ -731,18 +716,33 @@
         font-size: 0.75rem;
     }
     
+    .table-header th {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.65rem;
+    }
+    
+    .subcriteria-row td {
+        padding: 0.5rem 0.2rem;
+    }
+    
     .subcriteria-name {
         font-size: 0.75rem;
     }
     
     .range-badge,
     .score-badge {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         padding: 0.25rem 0.5rem;
+    }
+    
+    .row-number {
+        width: 20px;
+        height: 20px;
+        font-size: 0.65rem;
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
     .container-fluid {
         padding: 0.5rem;
     }
@@ -752,11 +752,11 @@
     }
     
     .page-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
     .page-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
     
     .header-content {
@@ -767,9 +767,18 @@
         font-size: 0.95rem;
     }
     
+    .weight-display {
+        padding: 0.5rem;
+        min-width: 80px;
+    }
+    
+    .weight-value {
+        font-size: 1.1rem;
+    }
+    
     .table-header th,
     .subcriteria-row td {
-        padding: 0.5rem 0.2rem;
+        padding: 0.4rem 0.15rem;
     }
     
     .subcriteria-name {
@@ -778,8 +787,39 @@
     
     .range-badge,
     .score-badge {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         padding: 0.2rem 0.4rem;
+    }
+    
+    .row-number {
+        width: 18px;
+        height: 18px;
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+    
+    .criteria-title {
+        font-size: 0.9rem;
+    }
+    
+    .meta-item {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .subcriteria-name {
+        font-size: 0.65rem;
+    }
+    
+    .range-badge,
+    .score-badge {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.3rem;
     }
 }
 </style>

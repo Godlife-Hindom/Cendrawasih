@@ -162,7 +162,7 @@
             <form action="{{ route('user.calculate.aras') }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-warning btn-lg px-5 py-3 rounded-pill shadow-sm fw-semibold">
-                    <i class="bi bi-play-fill me-2"></i>Mulai Perhitungan ARAS
+                    <i class="bi bi-play-fill me-2"></i>Hasil ARAS
                 </button>
             </form>
         </div>

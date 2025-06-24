@@ -238,7 +238,7 @@
                 @endif
 
                 <x-primary-button class="w-full sm:w-auto sm:ml-3 px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-emerald-600 hover:bg-emerald-700 focus:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-300 rounded-xl btn-hover">
-                    {{ __('Log in') }}
+                    {{ __('Login') }}
                 </x-primary-button>
             </div>
         </form>
