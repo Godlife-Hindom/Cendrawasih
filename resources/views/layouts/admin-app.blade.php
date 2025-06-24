@@ -253,7 +253,6 @@
         <div class="text-center mb-4 logo">
             <img src="{{ asset('images/pp.png') }}" alt="Logo">
             <h5 class="text-primary">{{ Auth::user()->name }}</h5>
-            <h6 class="text-black">Dashboard Admin</h6>
         </div>
 
 
