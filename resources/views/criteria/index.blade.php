@@ -67,7 +67,7 @@
                     <div class="stat-info">
                         <h4>Status</h4>
                         <p class="{{ $criteria->sum('weight') == 100 ? 'green' : 'orange' }}">
-                            {{ $criteria->sum('weight') == 100 ? 'Lengkap' : 'Perlu Review' }}
+                            {{ $criteria->sum('weight') == 100 ? 'Lengkap' : 'Review' }}
                         </p>
                     </div>
                 </div>
