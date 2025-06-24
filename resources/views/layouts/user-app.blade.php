@@ -35,20 +35,59 @@
       color: #fff;
     }
 
-    
-
     .sidebar {
       width: 280px;
       background: var(--primary-gradient);
-      color: #000000; /* Ubah dari 'black' menjadi '#000000' untuk lebih eksplisit */
+      color: #000000;
       padding: 0;
       height: 100vh;
       position: fixed;
+      top: 0;
+      left: 0;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
+    }
+
+    /* Perbaikan untuk screenshot full page */
+    @media print {
+      .sidebar {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100% !important;
+        min-height: 100vh !important;
+      }
+      
+      .main-content {
+        position: relative !important;
+      }
+    }
+
+    /* Tambahan untuk browser yang mendukung CSS untuk screenshot */
+    .sidebar {
+      position: -webkit-sticky;
+      position: sticky;
+      position: fixed;
+    }
+
+    
+
+    /* Perbaikan khusus untuk screenshot tools */
+    html.screenshot-mode .sidebar,
+    body.screenshot-mode .sidebar {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      height: auto !important;
+      min-height: 100vh !important;
+    }
+
+    html.screenshot-mode .main-content,
+    body.screenshot-mode .main-content {
+      position: relative !important;
     }
 
     .sidebar::before {
@@ -70,7 +109,7 @@
     .sidebar-header {
       padding: 25px 20px;
       text-align: center;
-      border-bottom: 1px solid rgba(0,0,0,0.1); /* Ubah dari rgba(255,255,255,0.1) */
+      border-bottom: 1px solid rgba(0,0,0,0.1);
       position: relative;
       background: rgba(255,255,255,0.05);
     }
@@ -122,7 +161,7 @@
       height: 70px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid rgba(0,0,0,0.3); /* Ubah dari rgba(255,255,255,0.3) */
+      border: 3px solid rgba(0,0,0,0.3);
       position: relative;
       z-index: 2;
       transition: all 0.3s ease;
@@ -142,13 +181,13 @@
       margin: 0;
       font-size: 18px;
       font-weight: 600;
-      color: #000000; /* Eksplisit hitam */
-      text-shadow: 0 2px 4px rgba(255,255,255,0.3); /* Ubah shadow menjadi putih */
+      color: #000000;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.3);
     }
 
     .sidebar .profile .status {
       font-size: 12px;
-      color: #333333; /* Ubah dari var(--accent-color) menjadi hitam gelap */
+      color: #333333;
       font-weight: 500;
       margin-top: 3px;
       opacity: 0.9;
@@ -170,7 +209,7 @@
     }
 
     .nav-section-title {
-      color: rgba(0,0,0,0.6); /* Ubah dari rgba(255,255,255,0.6) */
+      color: rgba(0,0,0,0.6);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -188,7 +227,7 @@
       display: flex;
       align-items: center;
       padding: 15px 25px;
-      color: rgba(0,0,0,0.85); /* Ubah dari rgba(255,255,255,0.85) */
+      color: rgba(0,0,0,0.85);
       text-decoration: none;
       border: none;
       background: none;
@@ -217,15 +256,15 @@
     }
 
     .sidebar a:hover, .sidebar button:hover {
-      background: rgba(0,0,0,0.15); /* Ubah dari rgba(255,255,255,0.15) */
-      color: #000000; /* Ubah dari white menjadi hitam */
+      background: rgba(0,0,0,0.15);
+      color: #000000;
       transform: translateX(8px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     .sidebar a.active {
-      background: rgba(0,0,0,0.2); /* Ubah dari rgba(255,255,255,0.2) */
-      color: #000000; /* Ubah dari white menjadi hitam */
+      background: rgba(0,0,0,0.2);
+      color: #000000;
       font-weight: 600;
     }
 
@@ -238,7 +277,7 @@
       margin-right: 15px;
       min-width: 24px;
       transition: all 0.3s ease;
-      color: #000000; /* Eksplisit hitam untuk ikon */
+      color: #000000;
     }
 
     .sidebar a:hover i, .sidebar button:hover i {
@@ -291,8 +330,8 @@
     .mobile-toggle {
       position: fixed;
       top: 15px;
-      right: 15px; /* pindah ke kanan */
-      left: auto; /* reset left */
+      right: 15px;
+      left: auto;
       z-index: 1100;
       background: var(--accent-color1) !important;
       border: none;
@@ -328,22 +367,22 @@
       font-size: 14px;
       display: flex;
       align-items: center;
-      color: rgba(0,0,0,0.8); /* Ubah dari rgba(255,255,255,0.8) */
+      color: rgba(0,0,0,0.8);
       transition: all 0.3s ease;
-      border-top: 1px solid rgba(0,0,0,0.1); /* Ubah dari rgba(255,255,255,0.1) */
+      border-top: 1px solid rgba(0,0,0,0.1);
       background: rgba(255,255,255,0.05);
     }
 
     .dark-toggle:hover {
-      background: rgba(0,0,0,0.1); /* Ubah dari rgba(255,255,255,0.1) */
-      color: #000000; /* Ubah dari white menjadi hitam */
+      background: rgba(0,0,0,0.1);
+      color: #000000;
     }
 
     .dark-toggle i {
       margin-right: 12px;
       font-size: 1.2rem;
       transition: all 0.3s ease;
-      color: #000000; /* Eksplisit hitam untuk ikon */
+      color: #000000;
     }
 
     .dark-toggle:hover i {
@@ -364,97 +403,97 @@
     }
 
     /* === Main Content Layout === */
-.main-content {
-  margin-left: 280px;
-  padding: 20px;
-  width: calc(100% - 280px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+    .main-content {
+      margin-left: 280px;
+      padding: 20px;
+      width: calc(100% - 280px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 100vh;
+    }
 
-.sidebar.collapsed ~ .main-content {
-  margin-left: 80px;
-  width: calc(100% - 80px);
-}
+    .sidebar.collapsed ~ .main-content {
+      margin-left: 80px;
+      width: calc(100% - 80px);
+    }
 
-/* === Content Styling (Box, Shadow, Blur) === */
-.content {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  margin: 1rem;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-}
+    /* === Content Styling (Box, Shadow, Blur) === */
+    .content {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      margin: 1rem;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
 
-/* === Content Header (Gradient) === */
-.content-header {
-  background: linear-gradient(135deg, #667eea 0%, #a7f3d0 100%);
-  color: white;
-  padding: 2rem 2.5rem;
-  position: relative;
-  overflow: hidden;
-}
+    /* === Content Header (Gradient) === */
+    .content-header {
+      background: linear-gradient(135deg, #667eea 0%, #a7f3d0 100%);
+      color: white;
+      padding: 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
 
-.content-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: float 6s ease-in-out infinite;
-}
+    .content-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
+    }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
 
-.welcome-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  position: relative;
-  z-index: 2;
-}
+    .welcome-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
 
-.welcome-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  position: relative;
-  z-index: 2;
-}
+    .welcome-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
 
-/* === Content Body (White Panel Inside) === */
-.content-body {
-  padding: 2.5rem;
-  background: white;
-}
+    /* === Content Body (White Panel Inside) === */
+    .content-body {
+      padding: 2.5rem;
+      background: white;
+    }
 
-/* === Custom Navbar === */
-.navbar-custom {
-  background: white;
-  color: #333;
-  font-weight: 600;
-  font-size: 20px;
-  border-bottom: 1px solid #e9ecef;
-  padding: 20px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
+    /* === Custom Navbar === */
+    .navbar-custom {
+      background: white;
+      color: #333;
+      font-weight: 600;
+      font-size: 20px;
+      border-bottom: 1px solid #e9ecef;
+      padding: 20px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
 
-body.dark-mode .navbar-custom {
-  background-color: var(--dark-secondary);
-  color: white;
-  border-color: #444;
-}
-
+    body.dark-mode .navbar-custom {
+      background-color: var(--dark-secondary);
+      color: white;
+      border-color: #444;
+    }
 
     /* Animations */
     @keyframes pulse {
@@ -544,8 +583,6 @@ body.dark-mode .navbar-custom {
     }
 
     @media (max-width: 576px) {
-      
-
       .content-header {
         padding: 1.5rem;
       }
@@ -734,6 +771,17 @@ body.dark-mode .navbar-custom {
 
     // Call prevent body scroll on page load
     document.addEventListener('DOMContentLoaded', preventBodyScroll);
+
+    // Fungsi untuk screenshot mode (opsional - jika dibutuhkan)
+    function enableScreenshotMode() {
+      document.documentElement.classList.add('screenshot-mode');
+      document.body.classList.add('screenshot-mode');
+    }
+
+    function disableScreenshotMode() {
+      document.documentElement.classList.remove('screenshot-mode');
+      document.body.classList.remove('screenshot-mode');
+    }
   </script>
   @stack('scripts')
 </body>
