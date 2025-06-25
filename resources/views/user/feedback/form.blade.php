@@ -149,192 +149,221 @@
 </div>
 
 <style>
-/* Mobile First Responsive Design */
-@media (max-width: 576px) {
+.question-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+.rating-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.rating-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.3);
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* RESPONSIVE STYLES - TAMBAHAN UNTUK MOBILE */
+@media (max-width: 768px) {
+    /* Container padding untuk mobile */
     .container {
         padding-left: 15px;
         padding-right: 15px;
     }
     
-    /* Header adjustments */
+    /* Header responsive */
     .text-center h2 {
         font-size: 1.5rem;
     }
     
-    .text-center p {
-        font-size: 1rem;
+    .text-center p.fs-5 {
+        font-size: 1rem !important;
     }
     
-    /* Icon size adjustment */
-    .d-inline-flex {
-        width: 60px !important;
-        height: 60px !important;
-    }
-    
-    .d-inline-flex i {
-        font-size: 1.5rem !important;
-    }
-    
-    /* Card padding adjustments */
+    /* Card padding untuk mobile */
     .card-body {
         padding: 1.5rem !important;
     }
     
-    /* Instructions card */
-    .d-flex.align-items-start .bg-info {
-        width: 30px;
-        height: 30px;
-        padding: 0.5rem;
-    }
-    
-    .d-flex.align-items-start .bg-info i {
-        font-size: 0.875rem;
-    }
-    
-    /* Question cards */
-    .question-card .card-body {
-        padding: 1rem !important;
-    }
-    
-    .question-card .bg-primary {
-        width: 32px !important;
-        height: 32px !important;
-        font-size: 0.875rem;
-    }
-    
-    .question-card p {
-        font-size: 0.9rem;
-        line-height: 1.4;
-    }
-    
-    /* Rating adjustments */
-    .rating-container .d-flex.justify-content-between {
-        padding: 0 !important;
-        gap: 8px;
-    }
-    
-    .form-check-input {
-        transform: scale(1.1) !important;
-        margin-right: 4px !important;
-    }
-    
-    .form-check-label {
-        font-size: 0.9rem;
-        margin-left: 4px !important;
-    }
-    
-    /* Rating labels */
-    .rating-container small {
-        font-size: 0.75rem;
+    /* Instructions card responsive */
+    .d-flex.align-items-start {
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
     
-    /* Submit button */
-    .btn-lg {
-        padding: 0.8rem 2rem !important;
-        font-size: 1rem;
+    .d-flex.align-items-start .bg-info {
+        margin-bottom: 1rem;
+        margin-right: 0;
     }
     
-    /* Progress indicator */
-    .progress {
-        width: 120px !important;
-        height: 6px !important;
+    /* Rating container mobile */
+    .rating-container .d-flex:first-child {
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        padding: 10px 0;
     }
     
-    .progress + .d-flex small {
-        font-size: 0.75rem;
-    }
-}
-
-/* Tablet adjustments */
-@media (min-width: 577px) and (max-width: 768px) {
-    .container {
-        padding-left: 20px;
-        padding-right: 20px;
+    .form-check {
+        margin-bottom: 10px;
     }
     
-    /* Question cards */
-    .question-card .card-body {
-        padding: 1.25rem !important;
+    /* Rating input lebih besar di mobile */
+    .rating-input {
+        transform: scale(1.5) !important;
+        margin-right: 10px;
     }
     
-    /* Rating container spacing */
-    .rating-container .d-flex.justify-content-between {
-        padding: 0 0.5rem !important;
+    .form-check-label {
+        font-size: 1.1rem;
+        margin-left: 12px !important;
     }
     
-    /* Progress indicator */
-    .progress {
-        width: 150px !important;
-    }
-}
-
-/* Small mobile devices */
-@media (max-width: 360px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    
-    /* Reduce spacing further */
-    .py-5 {
-        padding-top: 2rem !important;
-        padding-bottom: 2rem !important;
-    }
-    
-    .mb-4, .mb-5 {
-        margin-bottom: 1.5rem !important;
-    }
-    
-    /* Question numbering */
-    .question-card .bg-primary {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.8rem;
-    }
-    
-    /* Rating labels - stack vertically on very small screens */
-    .rating-container .d-flex.justify-content-between:last-child {
+    /* Rating labels mobile */
+    .rating-container .d-flex:last-child {
         flex-direction: column;
         text-align: center;
         gap: 5px;
     }
     
-    .rating-container .d-flex.justify-content-between:last-child small:first-child::after {
-        content: " • ";
+    .rating-container .d-flex:last-child small:first-child {
+        order: 1;
     }
     
-    /* Button adjustments */
-    .btn-lg {
-        padding: 0.7rem 1.5rem !important;
-        font-size: 0.9rem;
+    .rating-container .d-flex:last-child small:last-child {
+        order: 2;
     }
     
-    /* Progress text */
+    /* Question card mobile */
+    .question-card .d-flex.align-items-start {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .question-card .bg-primary {
+        margin-right: 1rem;
+        margin-bottom: 0;
+    }
+    
+    /* Progress bar mobile */
     .progress {
         width: 100px !important;
+        margin-top: 10px;
     }
     
     .d-flex.align-items-center.justify-content-between {
         flex-direction: column;
+        align-items: flex-start;
         gap: 10px;
-        text-align: center;
+    }
+    
+    /* Button responsive */
+    .btn-lg {
+        width: 100%;
+        padding: 15px 20px !important;
+        font-size: 1.1rem;
+    }
+    
+    /* Icon header size mobile */
+    .d-inline-flex[style*="width: 80px"] {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    .bi-chat-dots-fill {
+        font-size: 1.5rem !important;
+    }
+    
+    /* Question number circle mobile */
+    .bg-primary.rounded-circle[style*="width: 40px"] {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 0.9rem;
     }
 }
 
-/* Landscape mode adjustments for mobile */
-@media (max-width: 768px) and (orientation: landscape) {
+/* Extra small devices */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .mb-5 {
+        margin-bottom: 2rem !important;
+    }
+    
+    /* Rating container extra small */
+    .rating-container .d-flex:first-child {
+        gap: 10px;
+    }
+    
+    .rating-input {
+        transform: scale(1.3) !important;
+    }
+    
+    .form-check-label {
+        font-size: 1rem;
+        margin-left: 8px !important;
+    }
+    
+    /* Instructions badges responsive */
+    .row.g-2 {
+        flex-direction: column;
+    }
+    
+    .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    /* Text sizing */
+    h5.fw-semibold {
+        font-size: 1.1rem;
+    }
+    
+    p.fw-medium {
+        font-size: 0.95rem;
+    }
+}
+
+/* Landscape orientation mobile */
+@media (max-width: 896px) and (orientation: landscape) {
     .py-5 {
         padding-top: 1rem !important;
         padding-bottom: 1rem !important;
     }
     
-    .mb-4, .mb-5 {
+    .mb-5 {
         margin-bottom: 1rem !important;
     }
     
-    .question-card {
-        margin-bottom: 0.75rem !important;
+    .mb-4 {
+        margin-bottom: 1rem !important;
     }
 }
 </style>
