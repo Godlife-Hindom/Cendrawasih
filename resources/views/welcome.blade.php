@@ -152,7 +152,8 @@
 
     .mobile-overlay.active {
       opacity: 1;
-      visibility: visible;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 1); /* hitam pekat, tanpa transparansi */
     }
     
     /* Enhanced Hamburger Animation */
