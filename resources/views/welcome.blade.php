@@ -154,6 +154,30 @@
         background-size: 150px;
       }
     }
+    
+    /* CSS untuk menghilangkan semua animasi */
+    *, *::before, *::after {
+      animation-duration: 0s !important;
+      animation-delay: 0s !important;
+      animation-fill-mode: none !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+    
+    /* Khusus untuk menghilangkan hover effects */
+    .card-hover:hover {
+      transform: none !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .btn-hover::before {
+      display: none !important;
+    }
+    
+    .pulse-ring {
+      opacity: 0.2 !important;
+      transform: scale(1) !important;
+    }
   </style>
 </head>
 
