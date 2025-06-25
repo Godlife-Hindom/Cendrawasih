@@ -17,6 +17,36 @@
       overflow-x: hidden;
     }
     
+    /* Tambahan untuk smooth scrolling mobile */
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Optimasi untuk mobile scrolling */
+    @media (max-width: 768px) {
+      * {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      
+      body {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+      }
+    }
+    
     .glow {
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
     }
@@ -41,6 +71,9 @@
       height: 100%;
       z-index: -5;
       animation: float 20s ease-in-out infinite;
+      /* Optimasi mobile */
+      will-change: transform;
+      transform: translateZ(0);
     }
     
     @keyframes float {
@@ -50,6 +83,9 @@
     
     .card-hover {
       transition: all 0.3s ease;
+      /* Optimasi mobile */
+      will-change: transform;
+      transform: translateZ(0);
     }
     
     .card-hover:hover {
@@ -61,6 +97,9 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      /* Optimasi mobile */
+      will-change: transform;
+      transform: translateZ(0);
     }
     
     .btn-hover::before {
@@ -87,6 +126,9 @@
     
     .floating-icons {
       animation: bounce 2s ease-in-out infinite;
+      /* Optimasi mobile */
+      will-change: transform;
+      transform: translateZ(0);
     }
     
     @keyframes bounce {
@@ -96,6 +138,9 @@
     
     .pulse-ring {
       animation: pulse-ring 2s infinite;
+      /* Optimasi mobile */
+      will-change: transform, opacity;
+      transform: translateZ(0);
     }
     
     @keyframes pulse-ring {
@@ -113,6 +158,9 @@
     .mobile-menu {
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
+      /* Optimasi mobile */
+      will-change: transform;
+      -webkit-transform: translateZ(0);
     }
     
     .mobile-menu.active {
@@ -137,46 +185,73 @@
     .hamburger {
       cursor: pointer;
       transition: all 0.3s ease;
+      /* Optimasi mobile */
+      will-change: transform;
+      transform: translateZ(0);
     }
     
     .hamburger.active {
       transform: rotate(45deg);
     }
     
+    /* Smooth scrolling optimization untuk mobile */
     @media (max-width: 768px) {
       .parallax {
         background-size: 200px;
+        background-attachment: scroll; /* Ubah ke scroll untuk mobile */
+      }
+      
+      /* Disable animasi berat pada mobile untuk performa */
+      .floating-icons {
+        animation-duration: 3s;
+      }
+      
+      .pulse-ring {
+        animation-duration: 3s;
+      }
+      
+      /* Optimasi touch untuk mobile */
+      .card-hover:active,
+      .btn-hover:active {
+        transform: scale(0.98);
+      }
+      
+      /* Smooth transition untuk mobile menu */
+      .mobile-menu {
+        -webkit-overflow-scrolling: touch;
       }
     }
     
     @media (max-width: 640px) {
       .parallax {
         background-size: 150px;
+        background-attachment: scroll; /* Ubah ke scroll untuk mobile */
       }
     }
     
-    /* CSS untuk menghilangkan semua animasi */
-    *, *::before, *::after {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
-      animation-fill-mode: none !important;
-      transition-duration: 0s !important;
-      transition-delay: 0s !important;
+    /* Additional mobile optimizations */
+    @media (max-width: 480px) {
+      /* Reduce motion untuk device dengan layar kecil */
+      * {
+        animation-duration: 0.5s !important;
+        transition-duration: 0.3s !important;
+      }
+      
+      .card-hover:hover {
+        transform: translateY(-5px) scale(1.02);
+      }
     }
     
-    /* Khusus untuk menghilangkan hover effects */
-    .card-hover:hover {
-      transform: none !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-    }
+    /* Smooth scroll behavior enhancement */
+      html {
+        scroll-behavior: smooth;
+      }
     
-    .btn-hover::before {
-      display: none !important;
-    }
-    
-    .pulse-ring {
-      opacity: 0.2 !important;
-      transform: scale(1) !important;
+    /* Touch action optimization */
+    .card-hover,
+    .btn-hover,
+    .mobile-menu {
+      touch-action: manipulation;
     }
   </style>
 </head>
@@ -435,31 +510,108 @@
         }
       });
 
-      // Smooth scrolling for anchor links
+      // Enhanced smooth scrolling for anchor links with mobile optimization
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
           const target = document.querySelector(this.getAttribute('href'));
           if (target) {
-            target.scrollIntoView({
+            // Mobile-optimized smooth scrolling
+            const isMobile = window.innerWidth <= 768;
+            const scrollOptions = {
               behavior: 'smooth',
-              block: 'start'
-            });
+              block: 'start',
+              inline: 'nearest'
+            };
+            
+            if (isMobile) {
+              // Additional mobile scrolling enhancement
+              target.scrollIntoView(scrollOptions);
+              // Force smooth scroll for mobile
+              setTimeout(() => {
+                window.scrollTo({
+                  top: target.offsetTop - 80,
+                  behavior: 'smooth'
+                });
+              }, 100);
+            } else {
+              target.scrollIntoView(scrollOptions);
+            }
           }
         });
       });
 
-      // Navbar background change on scroll
-      window.addEventListener('scroll', function() {
+      // Enhanced navbar background change on scroll with mobile optimization
+      let ticking = false;
+      
+      function updateNavbar() {
         const nav = document.querySelector('nav');
         if (nav) {
           if (window.scrollY > 50) {
             nav.style.background = 'rgba(255, 255, 255, 0.15)';
+            nav.style.backdropFilter = 'blur(20px)';
           } else {
             nav.style.background = 'rgba(255, 255, 255, 0.05)';
+            nav.style.backdropFilter = 'blur(15px)';
           }
         }
-      });
+        ticking = false;
+      }
+      
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(updateNavbar);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Mobile performance optimization
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // Reduce animation complexity on mobile
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+          @media (max-width: 768px) {
+            .parallax {
+              background-attachment: scroll !important;
+              animation: none !important;
+            }
+            
+            .floating-icons {
+              animation-duration: 4s !important;
+            }
+            
+            .pulse-ring {
+              animation-duration: 4s !important;
+            }
+          }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        // Enhanced touch scrolling
+        document.body.style.webkitOverflowScrolling = 'touch';
+        document.body.style.overflowScrolling = 'touch';
+      }
+
+      // Intersection Observer for mobile scroll performance
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate');
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe elements for mobile optimization
+        document.querySelectorAll('.card-hover, .floating-icons').forEach(el => {
+          observer.observe(el);
+        });
+      }
     });
   </script>
 </body>
