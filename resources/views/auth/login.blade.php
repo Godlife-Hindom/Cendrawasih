@@ -235,13 +235,6 @@
 
             <!-- Forgot + Submit -->
             <div class="flex flex-col sm:flex-row items-center justify-between mt-4 sm:mt-6 space-y-3 sm:space-y-0 animate-fade-in delay-1000">
-                @if (Route::has('password.request'))
-                    <a class="underline text-xs sm:text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-200 hover:scale-105"
-                       href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
                 <x-primary-button class="w-full sm:w-auto sm:ml-3 px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-emerald-600 hover:bg-emerald-700 focus:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-300 rounded-xl btn-hover">
                     {{ __('Login') }}
                 </x-primary-button>
