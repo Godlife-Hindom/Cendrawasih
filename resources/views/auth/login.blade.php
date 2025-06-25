@@ -191,7 +191,7 @@
             @csrf
 
             <!-- Email -->
-            <div class="animate-slide-left delay-700">
+            <div class="animate-slide-left delay-200">
                 <x-input-label for="email" :value="__('Email')" class="text-sm sm:text-base font-medium text-gray-700" />
                 <div class="relative mt-1 sm:mt-2">
                     <x-text-input id="email" class="block w-full px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300 input-focus bg-white/50 backdrop-blur-sm"
@@ -206,7 +206,7 @@
             </div>
 
             <!-- Password -->
-            <div class="animate-slide-right delay-700">
+            <div class="animate-slide-right delay-200">
                 <x-input-label for="password" :value="__('Password')" class="text-sm sm:text-base font-medium text-gray-700" />
                 <div class="relative mt-1 sm:mt-2">
                     <x-text-input id="password" class="block w-full px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300 input-focus bg-white/50 backdrop-blur-sm"
@@ -221,7 +221,7 @@
             </div>
 
             <!-- Remember Me dan Show Password -->
-            <div class="flex items-center justify-between mt-4 animate-fade-in delay-1000">
+            <div class="flex items-center justify-between mt-4 animate-fade-in delay-5000">
                 <label for="remember_me" class="inline-flex items-center group cursor-pointer">
                     <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-emerald-600 shadow-sm focus:ring-emerald-500 transition-all duration-200 hover:scale-110" name="remember">
                     <span class="ml-2 text-xs sm:text-sm text-gray-600 group-hover:text-gray-800 transition-colors duration-200">{{ __('Remember me') }}</span>
@@ -234,21 +234,21 @@
             </div>
 
             <!-- Forgot + Submit -->
-            <div class="flex flex-col sm:flex-row items-center justify-center mt-4 sm:mt-6 space-y-3 sm:space-y-0 animate-fade-in delay-1000">
+            <div class="flex flex-col sm:flex-row items-center justify-center mt-4 sm:mt-6 space-y-3 sm:space-y-0 animate-fade-in delay-500">
                 <x-primary-button class="w-full sm:w-auto px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-emerald-600 hover:bg-emerald-700 focus:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-300 rounded-xl btn-hover">
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
         </form>
 
-        <div class="relative z-10 animate-fade-in delay-1000">
+        <div class="relative z-10 animate-fade-in delay-500">
             <div class="flex items-center my-4 sm:my-6">
                 <div class="flex-1 border-t border-gray-300 opacity-50"></div>
                 <span class="px-3 text-xs sm:text-sm text-gray-500 bg-white/50 rounded-lg">atau</span>
                 <div class="flex-1 border-t border-gray-300 opacity-50"></div>
             </div>
 
-            <p class="text-center text-xs sm:text-sm text-gray-600">
+            <p class="text-center text-xs sm:text-sm text-gray-300">
                 Belum punya akun?
                 <a href="{{ route('register') }}" class="text-emerald-600 hover:text-emerald-700 hover:underline font-medium transition-all duration-200 hover:scale-105 inline-block">Daftar</a>
             </p>
