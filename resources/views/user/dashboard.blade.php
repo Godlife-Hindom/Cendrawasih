@@ -140,6 +140,25 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4 offset-md-4">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon me-4">
+                            <div class="d-flex align-items-center justify-content-center bg-danger bg-opacity-10 rounded-3 p-3">
+                                <i class="bi bi-list-check fs-3 text-danger"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="text-secondary text-uppercase fw-semibold mb-1 small">Total Subkriteria</h6>
+                            <h2 class="text-danger fw-bold mb-1">{{ $subcriteriaCount }}</h2>
+                            <p class="text-muted mb-0 small">Subkriteria Pada Sistem</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     {{-- Calculation Section --}}
@@ -284,12 +303,12 @@
                     $hasFilled = \App\Models\Feedback::where('user_id', Auth::id())->exists();
                 @endphp
 
-                <!-- @if (!$hasFilled)
+                @if (!$hasFilled)
                     <a href="{{ route('user.feedback.form') }}" 
                     class="btn btn-primary btn-lg rounded-pill px-4">
                         <i class="bi bi-chat-left-dots-fill me-2"></i>Feedback SUS
                     </a>
-                @endif -->
+                @endif
             </div>
         </div>
     </div>

@@ -176,7 +176,7 @@
 
             <p class="text-center text-xs sm:text-sm text-gray-300">
                 Belum punya akun?
-                <a href="{{ route('register') }}" class="text-emerald-600 hover:text-emerald-700 hover:underline font-medium transition-all duration-200 hover:scale-105 inline-block">Daftar</a>
+                <a href="{{ route('register') }}" class="text-emerald-600 hover:text-emerald-700 hover:underline font-medium transition-all duration-200 hover:scale-105 inline-block">Daftar akun</a>
             </p>
         </div>
     </div>
