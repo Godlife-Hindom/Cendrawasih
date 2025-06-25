@@ -17,36 +17,6 @@
       overflow-x: hidden;
     }
     
-    /* Tambahan untuk smooth scrolling mobile */
-    * {
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-    
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    /* Optimasi untuk mobile scrolling */
-    @media (max-width: 768px) {
-      * {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-      }
-      
-      body {
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-      }
-    }
-    
     .glow {
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
     }
@@ -71,9 +41,6 @@
       height: 100%;
       z-index: -5;
       animation: float 20s ease-in-out infinite;
-      /* Optimasi mobile */
-      will-change: transform;
-      transform: translateZ(0);
     }
     
     @keyframes float {
@@ -83,9 +50,6 @@
     
     .card-hover {
       transition: all 0.3s ease;
-      /* Optimasi mobile */
-      will-change: transform;
-      transform: translateZ(0);
     }
     
     .card-hover:hover {
@@ -97,9 +61,6 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      /* Optimasi mobile */
-      will-change: transform;
-      transform: translateZ(0);
     }
     
     .btn-hover::before {
@@ -126,9 +87,6 @@
     
     .floating-icons {
       animation: bounce 2s ease-in-out infinite;
-      /* Optimasi mobile */
-      will-change: transform;
-      transform: translateZ(0);
     }
     
     @keyframes bounce {
@@ -138,9 +96,6 @@
     
     .pulse-ring {
       animation: pulse-ring 2s infinite;
-      /* Optimasi mobile */
-      will-change: transform, opacity;
-      transform: translateZ(0);
     }
     
     @keyframes pulse-ring {
@@ -158,9 +113,6 @@
     .mobile-menu {
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
-      /* Optimasi mobile */
-      will-change: transform;
-      -webkit-transform: translateZ(0);
     }
     
     .mobile-menu.active {
@@ -185,129 +137,22 @@
     .hamburger {
       cursor: pointer;
       transition: all 0.3s ease;
-      /* Optimasi mobile */
-      will-change: transform;
-      transform: translateZ(0);
     }
     
     .hamburger.active {
       transform: rotate(45deg);
     }
-
-    /* Tambahan untuk toggle navbar yang responsif */
-    .navbar-collapse {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-in-out;
-    }
     
-    .navbar-collapse.show {
-      max-height: 500px;
-    }
-    
-    .navbar-toggler {
-      border: none;
-      background: transparent;
-      padding: 4px;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-    
-    .navbar-toggler:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-    }
-    
-    .navbar-toggler span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background-color: #374151;
-      margin: 5px 0;
-      transition: 0.3s;
-      border-radius: 2px;
-    }
-    
-    .navbar-toggler.active span:nth-child(1) {
-      transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    
-    .navbar-toggler.active span:nth-child(2) {
-      opacity: 0;
-    }
-    
-    .navbar-toggler.active span:nth-child(3) {
-      transform: rotate(45deg) translate(-5px, -6px);
-    }
-    
-    /* Smooth scrolling optimization untuk mobile */
     @media (max-width: 768px) {
       .parallax {
         background-size: 200px;
-        background-attachment: scroll; /* Ubah ke scroll untuk mobile */
-      }
-      
-      /* Disable animasi berat pada mobile untuk performa */
-      .floating-icons {
-        animation-duration: 3s;
-      }
-      
-      .pulse-ring {
-        animation-duration: 3s;
-      }
-      
-      /* Optimasi touch untuk mobile */
-      .card-hover:active,
-      .btn-hover:active {
-        transform: scale(0.98);
-      }
-      
-      /* Smooth transition untuk mobile menu */
-      .mobile-menu {
-        -webkit-overflow-scrolling: touch;
-      }
-
-      /* Navbar collapse untuk mobile */
-      .navbar-collapse {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        margin-top: 10px;
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
     }
     
     @media (max-width: 640px) {
       .parallax {
         background-size: 150px;
-        background-attachment: scroll; /* Ubah ke scroll untuk mobile */
       }
-    }
-    
-    /* Additional mobile optimizations */
-    @media (max-width: 480px) {
-      /* Reduce motion untuk device dengan layar kecil */
-      * {
-        animation-duration: 0.5s !important;
-        transition-duration: 0.3s !important;
-      }
-      
-      .card-hover:hover {
-        transform: translateY(-5px) scale(1.02);
-      }
-    }
-    
-    /* Smooth scroll behavior enhancement */
-      html {
-        scroll-behavior: smooth;
-      }
-    
-    /* Touch action optimization */
-    .card-hover,
-    .btn-hover,
-    .mobile-menu {
-      touch-action: manipulation;
     }
   </style>
 </head>
@@ -324,8 +169,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
         <div class="text-xl font-bold text-gradient">SPK Cendrawasih</div>
-        
-        <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8">
           <a href="#home" class="hover:text-blue-600 transition-colors">Beranda</a>
           <a href="#fitur" class="hover:text-blue-600 transition-colors">Fitur</a>
@@ -337,32 +180,8 @@
           Daftar
         </a>
         </div>
-        
-        <!-- Mobile Toggle Button -->
-        <div class="md:hidden flex items-center space-x-2">
-          <button id="navbarToggler" class="navbar-toggler" type="button">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+        <div class="md:hidden">
           <button id="mobileToggle" class="hamburger text-2xl focus:outline-none">☰</button>
-        </div>
-      </div>
-
-      <!-- Mobile Navbar Collapse -->
-      <div id="navbarCollapse" class="navbar-collapse md:hidden">
-        <div class="flex flex-col space-y-3 py-2">
-          <a href="#home" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Beranda</a>
-          <a href="#fitur" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Fitur</a>
-          <a href="#about" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Tentang</a>
-          <div class="flex flex-col space-y-2 pt-2">
-            <a href="/login" class="btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-2 rounded-full font-semibold transition-all shadow-lg text-center">
-              Login
-            </a>
-            <a href="/register" class="btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-2 rounded-full font-semibold transition-all shadow-lg text-center">
-              Daftar
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -533,11 +352,6 @@
       const mobileOverlay = document.getElementById('mobileOverlay');
       const mobileLinks = document.querySelectorAll('.mobile-link');
 
-      // Tambahan untuk navbar toggle
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarCollapse = document.getElementById('navbarCollapse');
-      const navbarLinks = document.querySelectorAll('.navbar-link');
-
       function openMobileMenu() {
         mobileMenu.classList.add('active');
         mobileOverlay.classList.add('active');
@@ -551,33 +365,6 @@
         mobileToggle.classList.remove('active');
         document.body.style.overflow = '';
       }
-
-      // Fungsi toggle untuk navbar collapse
-      function toggleNavbar() {
-        navbarCollapse.classList.toggle('show');
-        navbarToggler.classList.toggle('active');
-      }
-
-      function closeNavbar() {
-        navbarCollapse.classList.remove('show');
-        navbarToggler.classList.remove('active');
-      }
-
-      // Event listeners untuk navbar toggle
-      if (navbarToggler) {
-        navbarToggler.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleNavbar();
-        });
-      }
-
-      // Close navbar ketika link diklik
-      navbarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-          closeNavbar();
-        });
-      });
 
       // Event listeners for mobile menu
       if (mobileToggle) {
@@ -614,7 +401,6 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeMobileMenu();
-          closeNavbar();
         }
       });
 
@@ -622,119 +408,34 @@
       window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
           closeMobileMenu();
-          closeNavbar();
         }
       });
 
-      // Close navbar ketika klik di luar
-      document.addEventListener('click', function(e) {
-        if (!navbarToggler.contains(e.target) && !navbarCollapse.contains(e.target)) {
-          closeNavbar();
-        }
-      });
-
-      // Enhanced smooth scrolling for anchor links with mobile optimization
+      // Smooth scrolling for anchor links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
           const target = document.querySelector(this.getAttribute('href'));
           if (target) {
-            // Mobile-optimized smooth scrolling
-            const isMobile = window.innerWidth <= 768;
-            const scrollOptions = {
+            target.scrollIntoView({
               behavior: 'smooth',
-              block: 'start',
-              inline: 'nearest'
-            };
-            
-            if (isMobile) {
-              // Additional mobile scrolling enhancement
-              target.scrollIntoView(scrollOptions);
-              // Force smooth scroll for mobile
-              setTimeout(() => {
-                window.scrollTo({
-                  top: target.offsetTop - 80,
-                  behavior: 'smooth'
-                });
-              }, 100);
-            } else {
-              target.scrollIntoView(scrollOptions);
-            }
+              block: 'start'
+            });
           }
         });
       });
 
-      // Enhanced navbar background change on scroll with mobile optimization
-      let ticking = false;
-      
-      function updateNavbar() {
+      // Navbar background change on scroll
+      window.addEventListener('scroll', function() {
         const nav = document.querySelector('nav');
         if (nav) {
           if (window.scrollY > 50) {
             nav.style.background = 'rgba(255, 255, 255, 0.15)';
-            nav.style.backdropFilter = 'blur(20px)';
           } else {
             nav.style.background = 'rgba(255, 255, 255, 0.05)';
-            nav.style.backdropFilter = 'blur(15px)';
           }
         }
-        ticking = false;
-      }
-      
-      window.addEventListener('scroll', function() {
-        if (!ticking) {
-          requestAnimationFrame(updateNavbar);
-          ticking = true;
-        }
-      }, { passive: true });
-
-      // Mobile performance optimization
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        // Reduce animation complexity on mobile
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = `
-          @media (max-width: 768px) {
-            .parallax {
-              background-attachment: scroll !important;
-              animation: none !important;
-            }
-            
-            .floating-icons {
-              animation-duration: 4s !important;
-            }
-            
-            .pulse-ring {
-              animation-duration: 4s !important;
-            }
-          }
-        `;
-        document.head.appendChild(styleSheet);
-        
-        // Enhanced touch scrolling
-        document.body.style.webkitOverflowScrolling = 'touch';
-        document.body.style.overflowScrolling = 'touch';
-      }
-
-      // Intersection Observer for mobile scroll performance
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('animate');
-            }
-          });
-        }, {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        });
-
-        // Observe elements for mobile optimization
-        document.querySelectorAll('.card-hover, .floating-icons').forEach(el => {
-          observer.observe(el);
-        });
-      }
+      });
     });
   </script>
 </body>
