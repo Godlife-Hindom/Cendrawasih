@@ -366,6 +366,223 @@
         margin-bottom: 1rem !important;
     }
 }
+
+/* PENAMBAHAN RESPONSIVE YANG LEBIH BAIK UNTUK MOBILE */
+
+/* Optimasi untuk layar sangat kecil (iPhone SE, dll) */
+@media (max-width: 375px) {
+    .container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    
+    .text-center h2 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+    }
+    
+    .card-body {
+        padding: 0.75rem !important;
+    }
+    
+    /* Rating buttons spacing untuk layar kecil */
+    .rating-container .d-flex:first-child {
+        gap: 8px;
+        padding: 8px 0;
+    }
+    
+    .form-check-label {
+        font-size: 0.9rem;
+        margin-left: 6px !important;
+    }
+    
+    .rating-input {
+        transform: scale(1.2) !important;
+    }
+    
+    /* Badge size adjustment */
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    /* Question text */
+    p.fw-medium {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+}
+
+/* Perbaikan untuk tablet portrait */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .rating-container .d-flex:first-child {
+        justify-content: space-around;
+        padding: 0 20px;
+    }
+    
+    .form-check-label {
+        font-size: 1rem;
+    }
+    
+    .rating-input {
+        transform: scale(1.4);
+    }
+}
+
+/* Touch targets improvement untuk mobile */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .form-check {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .form-check-input {
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    .form-check-label {
+        cursor: pointer;
+        padding: 8px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Better button interaction */
+    .btn {
+        min-height: 48px;
+        font-size: 1.1rem;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .question-card:hover {
+        transform: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    }
+    
+    .btn-success:hover {
+        transform: none;
+    }
+}
+
+/* High DPI displays optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .rating-input {
+        border-width: 1px;
+    }
+    
+    .card {
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+}
+
+/* Dark mode support untuk devices yang support */
+@media (prefers-color-scheme: dark) {
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+}
+
+/* Reduce motion untuk users yang prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .question-card {
+        transition: none !important;
+    }
+    
+    .btn {
+        transition: none !important;
+    }
+}
+
+/* Perbaikan spacing dan alignment */
+@media (max-width: 480px) {
+    /* Question number circle adjustment */
+    .question-card .d-flex.align-items-start .bg-primary {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.8rem;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+    }
+    
+    /* Better text wrapping */
+    .flex-grow-1 p {
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Instructions card better mobile layout */
+    .d-flex.align-items-start:not(.question-card .d-flex) .bg-info {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Progress indicator mobile */
+    .progress {
+        width: 80px !important;
+        height: 6px;
+    }
+    
+    #progressText {
+        font-size: 0.8rem;
+    }
+    
+    /* Submit button area */
+    .text-center.pt-4 {
+        padding-top: 1.5rem !important;
+    }
+}
+
+/* Orientation change handling */
+@media (max-height: 500px) and (orientation: landscape) {
+    .py-5 {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+    
+    .mb-5, .mb-4 {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .text-center h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Focus states untuk keyboard navigation */
+@media (max-width: 768px) {
+    .rating-input:focus {
+        outline: 2px solid #198754;
+        outline-offset: 2px;
+    }
+    
+    .btn:focus {
+        outline: 2px solid #198754;
+        outline-offset: 2px;
+    }
+}
 </style>
 
 <script>
