@@ -193,6 +193,52 @@
     .hamburger.active {
       transform: rotate(45deg);
     }
+
+    /* Tambahan untuk toggle navbar yang responsif */
+    .navbar-collapse {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+    
+    .navbar-collapse.show {
+      max-height: 500px;
+    }
+    
+    .navbar-toggler {
+      border: none;
+      background: transparent;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-toggler:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+    
+    .navbar-toggler span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #374151;
+      margin: 5px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+    
+    .navbar-toggler.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .navbar-toggler.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .navbar-toggler.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
     
     /* Smooth scrolling optimization untuk mobile */
     @media (max-width: 768px) {
@@ -219,6 +265,16 @@
       /* Smooth transition untuk mobile menu */
       .mobile-menu {
         -webkit-overflow-scrolling: touch;
+      }
+
+      /* Navbar collapse untuk mobile */
+      .navbar-collapse {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        margin-top: 10px;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
     }
     
@@ -268,6 +324,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
         <div class="text-xl font-bold text-gradient">SPK Cendrawasih</div>
+        
+        <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8">
           <a href="#home" class="hover:text-blue-600 transition-colors">Beranda</a>
           <a href="#fitur" class="hover:text-blue-600 transition-colors">Fitur</a>
@@ -279,8 +337,32 @@
           Daftar
         </a>
         </div>
-        <div class="md:hidden">
+        
+        <!-- Mobile Toggle Button -->
+        <div class="md:hidden flex items-center space-x-2">
+          <button id="navbarToggler" class="navbar-toggler" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <button id="mobileToggle" class="hamburger text-2xl focus:outline-none">☰</button>
+        </div>
+      </div>
+
+      <!-- Mobile Navbar Collapse -->
+      <div id="navbarCollapse" class="navbar-collapse md:hidden">
+        <div class="flex flex-col space-y-3 py-2">
+          <a href="#home" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Beranda</a>
+          <a href="#fitur" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Fitur</a>
+          <a href="#about" class="navbar-link hover:text-blue-600 transition-colors py-2 px-3 rounded">Tentang</a>
+          <div class="flex flex-col space-y-2 pt-2">
+            <a href="/login" class="btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-2 rounded-full font-semibold transition-all shadow-lg text-center">
+              Login
+            </a>
+            <a href="/register" class="btn-hover bg-green-200 hover:bg-blue-300 text-black px-6 py-2 rounded-full font-semibold transition-all shadow-lg text-center">
+              Daftar
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -451,6 +533,11 @@
       const mobileOverlay = document.getElementById('mobileOverlay');
       const mobileLinks = document.querySelectorAll('.mobile-link');
 
+      // Tambahan untuk navbar toggle
+      const navbarToggler = document.getElementById('navbarToggler');
+      const navbarCollapse = document.getElementById('navbarCollapse');
+      const navbarLinks = document.querySelectorAll('.navbar-link');
+
       function openMobileMenu() {
         mobileMenu.classList.add('active');
         mobileOverlay.classList.add('active');
@@ -464,6 +551,33 @@
         mobileToggle.classList.remove('active');
         document.body.style.overflow = '';
       }
+
+      // Fungsi toggle untuk navbar collapse
+      function toggleNavbar() {
+        navbarCollapse.classList.toggle('show');
+        navbarToggler.classList.toggle('active');
+      }
+
+      function closeNavbar() {
+        navbarCollapse.classList.remove('show');
+        navbarToggler.classList.remove('active');
+      }
+
+      // Event listeners untuk navbar toggle
+      if (navbarToggler) {
+        navbarToggler.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleNavbar();
+        });
+      }
+
+      // Close navbar ketika link diklik
+      navbarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          closeNavbar();
+        });
+      });
 
       // Event listeners for mobile menu
       if (mobileToggle) {
@@ -500,6 +614,7 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeMobileMenu();
+          closeNavbar();
         }
       });
 
@@ -507,6 +622,14 @@
       window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
           closeMobileMenu();
+          closeNavbar();
+        }
+      });
+
+      // Close navbar ketika klik di luar
+      document.addEventListener('click', function(e) {
+        if (!navbarToggler.contains(e.target) && !navbarCollapse.contains(e.target)) {
+          closeNavbar();
         }
       });
 
