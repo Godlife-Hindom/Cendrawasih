@@ -227,13 +227,172 @@
         50% { transform: scale(1.05); }
         100% { transform: scale(1); }
     }
+
+    /* Responsive Button Styles */
+    .action-buttons-container {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: 2rem;
+    }
+    
+    .btn-action {
+        border-radius: 15px;
+        padding: 15px 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-action::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-action:hover::before {
+        left: 100%;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+    
+    .btn-map {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+    
+    .btn-map:hover {
+        background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+        color: white;
+    }
+    
+    .btn-feedback {
+        background: linear-gradient(135deg, #007bff 0%, #6f42c1 100%);
+        color: white;
+    }
+    
+    .btn-feedback:hover {
+        background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%);
+        color: white;
+    }
+    
+    .btn-icon {
+        font-size: 1.2rem;
+        margin-right: 0.75rem;
+    }
+    
+    .btn-text {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .action-buttons-container {
+            padding: 1.5rem 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-action {
+            padding: 12px 20px;
+            min-height: 55px;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .btn-icon {
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+        }
+        
+        .btn-text {
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .action-buttons-container {
+            padding: 1rem;
+            border-radius: 15px;
+        }
+        
+        .btn-action {
+            padding: 10px 15px;
+            min-height: 50px;
+            font-size: 0.85rem;
+            border-radius: 12px;
+        }
+        
+        .btn-icon {
+            font-size: 1rem;
+            margin-right: 0.4rem;
+        }
+        
+        .btn-text {
+            font-size: 0.85rem;
+        }
+    }
+    
+    /* Extra small devices */
+    @media (max-width: 480px) {
+        .action-buttons-container {
+            margin-left: -15px;
+            margin-right: -15px;
+            border-radius: 0;
+        }
+        
+        .btn-action {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+    }
+    
+    /* Button Animation on Load */
+    .btn-action {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    .btn-action:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    
+    .btn-action:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 </style>
 
 <div class="container-fluid py-4">
-    {{-- Toast Notification --}}
+{{-- Toast Notification - Perbaikan --}}
 @if(session('success'))
-    <div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container">
-        <div class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;" id="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
             <div class="d-flex">
                 <div class="toast-body fw-semibold">
                     <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
@@ -494,29 +653,35 @@
         </div>
     </div>
 
-    {{-- Action Buttons --}}
+    {{-- Responsive Action Buttons --}}
     @if ($selectedUserId)
-        <div class="row mt-3">
-            <div class="col-md-6 offset-md-6 d-flex gap-2">
-                <a href="{{ route('pimpinan.peta', ['user_id' => $selectedUserId]) }}" class="btn btn-success btn-lg flex-fill">
-                    <i class="bi bi-map me-2"></i>Lihat Peta
-                </a>
-            </div>
-
-             {{-- Tombol Feedback SUS --}}
-             @php
+        <div class="action-buttons-container">
+            <div class="row g-3">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <a href="{{ route('pimpinan.peta', ['user_id' => $selectedUserId]) }}" 
+                       class="btn btn-action btn-map w-100">
+                        <i class="bi bi-map btn-icon"></i>
+                        <span class="btn-text">Lihat Peta</span>
+                    </a>
+                </div>
+                
+                {{-- Tombol Feedback SUS --}}
+                @php
                     $hasFilled = \App\Models\Feedback::where('user_id', Auth::id())->exists();
                 @endphp
 
                 @if (!$hasFilled)
-                    <a href="{{ route('pimpinan.feedback') }}" 
-                    class="btn btn-primary btn-lg rounded-pill px-4">
-                        <i class="bi bi-chat-left-dots-fill me-2"></i>Feedback SUS
-                    </a>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <a href="{{ route('pimpinan.feedback') }}" 
+                           class="btn btn-action btn-feedback w-100">
+                            <i class="bi bi-chat-left-dots-fill btn-icon"></i>
+                            <span class="btn-text">Feedback SUS</span>
+                        </a>
+                    </div>
                 @endif
+            </div>
         </div>
     @endif
-
 
     {{-- Stats Footer --}}
     <div class="row mt-5 pt-4 border-top">
@@ -539,37 +704,46 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Enhanced Toast Animation
     @if(session('success'))
-        document.addEventListener('DOMContentLoaded', function () {
-            const toastElement = document.querySelector('.toast');
-            if (toastElement) {
-                const toast = new bootstrap.Toast(toastElement, {
-                    autohide: true,
-                    delay: 4000
-                });
+        const toastElement = document.getElementById('successToast');
+        if (toastElement) {
+            // Inisialisasi Bootstrap Toast
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 4000
+            });
 
-                // Mulai dalam posisi tersembunyi di kanan
+            // Set initial state
+            toastElement.style.transform = 'translateX(100%)';
+            toastElement.style.opacity = '0';
+            toastElement.style.transition = 'transform 0.5s ease-out, opacity 0.3s ease-in';
+
+            // Show toast immediately
+            toast.show();
+
+            // Animate in after short delay
+            setTimeout(() => {
+                toastElement.style.transform = 'translateX(0)';
+                toastElement.style.opacity = '1';
+            }, 100);
+
+            // Optional: Add slide out animation when hiding
+            toastElement.addEventListener('hidden.bs.toast', function () {
                 toastElement.style.transform = 'translateX(100%)';
                 toastElement.style.opacity = '0';
-                toastElement.style.transition = 'transform 0.5s ease-out, opacity 0.3s ease-in';
+            });
+        }
+    @endif
 
-                // Tampilkan toast
-                toast.show();
-
-                // Jalankan animasi masuk setelah sedikit delay
-                setTimeout(() => {
-                    toastElement.style.transform = 'translateX(0)';
-                    toastElement.style.opacity = '1';
-                }, 100);
-            }
-        });
-        @endif
     // Add smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
     });
     

@@ -188,6 +188,604 @@
         justify-content: space-around;
     }
 }
+
+/* RESPONSIVE MOBILE STYLING - ADDITIONS */
+@media (max-width: 575.98px) {
+    /* Container padding untuk mobile */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Header section responsive */
+    .text-center.mb-5 h2 {
+        font-size: 1.5rem;
+    }
+    
+    .text-center.mb-5 p {
+        font-size: 1rem;
+    }
+    
+    /* Instructions card mobile */
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .d-flex.align-items-start .me-3 {
+        margin-right: 0.75rem !important;
+    }
+    
+    /* Rating scale mobile - vertikal layout */
+    .row.g-2 {
+        gap: 0.5rem;
+    }
+    
+    .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    /* Question cards mobile */
+    .question-card .card-body {
+        padding: 1rem !important;
+    }
+    
+    .question-card .d-flex.align-items-start .me-3 {
+        margin-right: 0.75rem !important;
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    /* Rating container mobile responsive */
+    .rating-container .d-flex:first-child {
+        justify-content: space-between;
+        padding: 0.5rem 0;
+    }
+    
+    .rating-container .form-check {
+        margin-right: 0;
+        margin-bottom: 0;
+    }
+    
+    .rating-input {
+        transform: scale(1.5) !important;
+        margin-right: 0.25rem;
+    }
+    
+    .form-check-label {
+        margin-left: 0.5rem !important;
+        font-size: 0.9rem;
+    }
+    
+    /* Rating labels mobile */
+    .rating-container .d-flex:last-child small {
+        font-size: 0.7rem;
+        text-align: center;
+        flex: 1;
+    }
+    
+    /* Submit button mobile */
+    .btn-lg {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+    
+    /* Progress indicator mobile */
+    .progress {
+        width: 100px !important;
+        height: 6px;
+    }
+    
+    .card-body.p-3 {
+        padding: 1rem !important;
+    }
+    
+    .d-flex.align-items-center.justify-content-between {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Badge sizing mobile */
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.6rem;
+    }
+    
+    /* Icon sizing mobile */
+    .bg-primary.bg-opacity-10 {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    .bi-chat-dots-fill {
+        font-size: 2rem !important;
+    }
+    
+    .bg-info.bg-opacity-10 .bi-info-circle-fill {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 375px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .question-card .card-body {
+        padding: 0.75rem !important;
+    }
+    
+    .rating-container .d-flex:first-child {
+        gap: 0.25rem;
+    }
+    
+    .rating-input {
+        transform: scale(1.3) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.85rem;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.85rem;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.65rem;
+    }
+}
+
+/* Landscape orientation mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    .text-center.mb-5 {
+        margin-bottom: 2rem !important;
+    }
+    
+    .col-12.mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .rating-input {
+        transform: scale(1.8) !important;
+    }
+    
+    .form-check-label {
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .question-card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn-success {
+        min-height: 50px;
+        touch-action: manipulation;
+    }
+}
+
+/* ENHANCED RESPONSIVE IMPROVEMENTS - TAMBAHAN BARU */
+
+/* Tablet Portrait (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        max-width: 720px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.75rem;
+    }
+    
+    .question-card .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .rating-input {
+        transform: scale(1.4);
+    }
+    
+    .btn-lg {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile Large (480px - 575px) */
+@media (min-width: 480px) and (max-width: 575px) {
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.6rem;
+    }
+    
+    .question-card .d-flex.align-items-start .me-3 {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        min-height: 35px;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    .rating-input {
+        transform: scale(1.6) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.95rem;
+        margin-left: 0.6rem !important;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.75rem;
+    }
+}
+
+/* Mobile Medium (414px - 479px) */
+@media (min-width: 414px) and (max-width: 479px) {
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.55rem;
+    }
+    
+    .question-card .card-body {
+        padding: 0.9rem !important;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.9rem;
+        line-height: 1.45;
+    }
+    
+    .rating-input {
+        transform: scale(1.55) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.9rem;
+        margin-left: 0.55rem !important;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.72rem;
+    }
+}
+
+/* Mobile Small (360px - 413px) */
+@media (min-width: 360px) and (max-width: 413px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.45rem;
+        line-height: 1.3;
+    }
+    
+    .text-center.mb-5 p {
+        font-size: 0.95rem;
+    }
+    
+    .question-card .card-body {
+        padding: 0.85rem !important;
+    }
+    
+    .question-card .d-flex.align-items-start .me-3 {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+        margin-right: 0.6rem !important;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.87rem;
+        line-height: 1.4;
+    }
+    
+    .rating-container .d-flex:first-child {
+        justify-content: space-evenly;
+        padding: 0.4rem 0;
+    }
+    
+    .rating-input {
+        transform: scale(1.4) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.87rem;
+        margin-left: 0.4rem !important;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.68rem;
+    }
+    
+    .btn-lg {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile Extra Small (320px - 359px) */
+@media (min-width: 320px) and (max-width: 359px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.35rem;
+        line-height: 1.25;
+    }
+    
+    .text-center.mb-5 p {
+        font-size: 0.9rem;
+    }
+    
+    .bg-primary.bg-opacity-10 {
+        width: 55px !important;
+        height: 55px !important;
+    }
+    
+    .bi-chat-dots-fill {
+        font-size: 1.8rem !important;
+    }
+    
+    .question-card .card-body {
+        padding: 0.8rem !important;
+    }
+    
+    .question-card .d-flex.align-items-start .me-3 {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        min-height: 26px;
+        margin-right: 0.5rem !important;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.82rem;
+        line-height: 1.35;
+    }
+    
+    .rating-container .d-flex:first-child {
+        justify-content: space-between;
+        padding: 0.3rem 0;
+        gap: 0.1rem;
+    }
+    
+    .rating-input {
+        transform: scale(1.25) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.82rem;
+        margin-left: 0.3rem !important;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.62rem;
+        padding: 0 0.1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .badge {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+/* Ultra Mobile (< 320px) */
+@media (max-width: 319px) {
+    .container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    
+    .text-center.mb-5 h2 {
+        font-size: 1.25rem;
+        line-height: 1.2;
+    }
+    
+    .text-center.mb-5 p {
+        font-size: 0.85rem;
+    }
+    
+    .bg-primary.bg-opacity-10 {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .bi-chat-dots-fill {
+        font-size: 1.6rem !important;
+    }
+    
+    .question-card .card-body {
+        padding: 0.7rem !important;
+    }
+    
+    .question-card .d-flex.align-items-start .me-3 {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        margin-right: 0.4rem !important;
+    }
+    
+    .question-card .fw-medium {
+        font-size: 0.78rem;
+        line-height: 1.3;
+    }
+    
+    .rating-container .d-flex:first-child {
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 0.2rem 0.1rem;
+    }
+    
+    .rating-input {
+        transform: scale(1.1) !important;
+    }
+    
+    .form-check-label {
+        font-size: 0.78rem;
+        margin-left: 0.2rem !important;
+    }
+    
+    .rating-container .d-flex:last-child {
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+    
+    .rating-container .d-flex:last-child small {
+        font-size: 0.58rem;
+        text-align: center;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .badge {
+        font-size: 0.6rem;
+        padding: 0.25rem 0.4rem;
+    }
+    
+    .progress {
+        width: 80px !important;
+        height: 5px;
+    }
+}
+
+/* Improved touch targets for all mobile devices */
+@media (max-width: 767px) {
+    .form-check {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .form-check-input {
+        margin: 0;
+    }
+    
+    .form-check-label {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+    
+    .question-card {
+        touch-action: manipulation;
+    }
+    
+    .btn-success {
+        touch-action: manipulation;
+        min-height: 48px;
+    }
+}
+
+/* High DPI/Retina Display Adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .rating-input {
+        border-width: 0.5px;
+    }
+    
+    .card {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .question-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    }
+}
+
+/* Dark mode support for mobile (if system preference) */
+@media (prefers-color-scheme: dark) and (max-width: 767px) {
+    .question-card {
+        background-color: rgba(255,255,255,0.95);
+    }
+    
+    .card {
+        background-color: rgba(255,255,255,0.98);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .question-card,
+    .btn-success,
+    .progress-bar {
+        transition: none !important;
+    }
+    
+    .question-card:hover {
+        transform: none !important;
+    }
+    
+    .btn-success:hover {
+        transform: none !important;
+    }
+}
+
+/* Print styles for mobile */
+@media print {
+    .container {
+        padding: 0;
+        max-width: 100%;
+    }
+    
+    .question-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .btn-success,
+    .progress {
+        display: none;
+    }
+}
 </style>
 
 <script>
