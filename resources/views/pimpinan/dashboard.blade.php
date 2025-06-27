@@ -230,6 +230,19 @@
 </style>
 
 <div class="container-fluid py-4">
+    {{-- Toast Notification --}}
+@if(session('success'))
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
     {{-- Hero Section --}}
     <div class="hero-section position-relative">
         <div class="floating-elements"></div>
@@ -489,6 +502,18 @@
                     <i class="bi bi-map me-2"></i>Lihat Peta
                 </a>
             </div>
+
+             {{-- Tombol Feedback SUS --}}
+             @php
+                    $hasFilled = \App\Models\Feedback::where('user_id', Auth::id())->exists();
+                @endphp
+
+                @if (!$hasFilled)
+                    <a href="{{ route('pimpinan.feedback') }}" 
+                    class="btn btn-primary btn-lg rounded-pill px-4">
+                        <i class="bi bi-chat-left-dots-fill me-2"></i>Feedback SUS
+                    </a>
+                @endif
         </div>
     @endif
 
@@ -512,6 +537,32 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Enhanced Toast Animation
+    @if(session('success'))
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastElement = document.querySelector('.toast');
+            if (toastElement) {
+                const toast = new bootstrap.Toast(toastElement, {
+                    autohide: true,
+                    delay: 4000
+                });
+
+                // Mulai dalam posisi tersembunyi di kanan
+                toastElement.style.transform = 'translateX(100%)';
+                toastElement.style.opacity = '0';
+                toastElement.style.transition = 'transform 0.5s ease-out, opacity 0.3s ease-in';
+
+                // Tampilkan toast
+                toast.show();
+
+                // Jalankan animasi masuk setelah sedikit delay
+                setTimeout(() => {
+                    toastElement.style.transform = 'translateX(0)';
+                    toastElement.style.opacity = '1';
+                }, 100);
+            }
+        });
+        @endif
     // Add smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {

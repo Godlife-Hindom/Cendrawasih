@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\ARASService;
 use Illuminate\Http\Request;
 use App\Models\Report;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -165,5 +166,44 @@ private function getKategori($score)
     }
 
     return back()->with('success', 'Laporan berhasil dikirim ke pimpinan.');
+}
+public function feedbackForm()
+{
+    return view('feedback.form'); // pastikan view ini ada
+}
+
+public function submitFeedback(Request $request)
+{
+    $sus = $request->input('sus');
+
+    // Validasi: semua 10 pertanyaan harus dijawab
+    if (!is_array($sus) || count($sus) < 10) {
+        return redirect()->back()->with('error', 'Semua pertanyaan harus dijawab.');
+    }
+
+    // Hitung skor SUS
+    $totalScore = 0;
+    foreach ($sus as $index => $value) {
+        $value = (int) $value;
+        // Ganjil: (value - 1), Genap: (5 - value)
+        if (($index + 1) % 2 === 1) {
+            $totalScore += $value - 1;
+        } else {
+            $totalScore += 5 - $value;
+        }
+    }
+
+    $finalScore = $totalScore * 2.5;
+
+    // Simpan ke tabel feedback
+    Feedback::create([
+        'user_id' => auth()->id(),
+        'responses' => json_encode([
+            'answers' => $sus,
+            'score' => $finalScore
+        ]),
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Terima kasih atas feedback Anda!');
 }
 }

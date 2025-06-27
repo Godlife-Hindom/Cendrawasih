@@ -1,12 +1,24 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import ee
 
 app = Flask(__name__)
+CORS(app)  # ← penting agar bisa diakses dari Laravel
 
 # Inisialisasi Earth Engine
-ee.Initialize(project='ee-godlife')  # Ganti dengan project kamu jika perlu
+ee.Initialize(project='ee-godlife')
 
-# Fungsi untuk sampling nilai dari gambar Earth Engine
+# Cek apakah titik ada di daratan (gunakan batas negara)
+def is_land(lat, lon):
+    try:
+        point = ee.Geometry.Point([lon, lat])
+        land = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+        return land.filterBounds(point).size().getInfo() > 0
+    except Exception as e:
+        print(f"Error checking land: {e}")
+        return False
+
+# Fungsi sampling nilai pixel
 def sample_gee_value(image, band, point, scale):
     try:
         img = image.select(band)
@@ -21,35 +33,32 @@ def sample_gee_value(image, band, point, scale):
         print(f"Error sampling band {band}: {e}")
         return None
 
+# ✅ Perbaikan utama untuk NDVI
 def get_landsat_ndvi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
-    
-    # Pilih koleksi Landsat 8/9 Level 2 Tier 1
+
     collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
         .filterDate('2024-01-01', '2024-12-31') \
         .filterBounds(point) \
-        .filter(ee.Filter.lt('CLOUD_COVER', 20)) \
-        .map(lambda img: img.updateMask(img.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))  # Mask awan (optional)
-    
-    if collection.size().getInfo() == 0:
+        .filter(ee.Filter.lt('CLOUD_COVER', 60)) \
+        .map(lambda image: image.updateMask(image.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))  # Mask cloud
+
+    size = collection.size().getInfo()
+    if size == 0:
+        print(f"Tidak ada citra Landsat valid di lokasi lat={lat}, lon={lon}")
         return None
 
-    # Ambil citra pertama (paling awal)
-    image = collection.first()
+    # Ambil komposit median
+    median = collection.median()
 
-    # Konversi DN ke reflectance (skala 0.0–1.0)
-    image = image.multiply(0.0000275).add(-0.2)
-
-    # Hitung NDVI = (NIR - RED) / (NIR + RED)
-    ndvi = image.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI')
+    sr_b5 = median.select('SR_B5').multiply(0.0000275).add(-0.2)
+    sr_b4 = median.select('SR_B4').multiply(0.0000275).add(-0.2)
+    ndvi = sr_b5.subtract(sr_b4).divide(sr_b5.add(sr_b4)).rename('NDVI')
 
     val = sample_gee_value(ndvi, 'NDVI', point, scale=30)
-    if val is not None:
-        return round(val, 4)  # NDVI sudah dalam skala -1.0 hingga 1.0
-    return None
+    return round(val, 4) if val is not None else None
 
-
-# NDWI dari Landsat 8
+# NDWI (tanpa kalibrasi karena rasio)
 def get_ndwi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
@@ -61,29 +70,18 @@ def get_ndwi(lat, lon):
         return None
 
     image = collection.first()
-
-    try:
-        # Hitung NDWI = (Green - NIR) / (Green + NIR)
-        ndwi_img = image.normalizedDifference(['SR_B3', 'SR_B5']).rename('NDWI')
-        sample = ndwi_img.sample(region=point, scale=30).first()
-        if sample is None:
-            return None
-        val = sample.get('NDWI').getInfo()
-        return round(val, 4)
-    except Exception as e:
-        print(f"Error calculating NDWI: {e}")
-        return None
+    ndwi_img = image.normalizedDifference(['SR_B3', 'SR_B5']).rename('NDWI')
+    val = sample_gee_value(ndwi_img, 'NDWI', point, scale=30)
+    return round(val, 4) if val is not None else None
 
 # DSM dari SRTM
 def get_dsm(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     image = ee.Image("USGS/SRTMGL1_003")
     val = sample_gee_value(image, 'elevation', point, scale=30)
-    if val is not None:
-        return round(val, 2)
-    return None
+    return round(val, 2) if val is not None else None
 
-# Rainfall dari CHIRPS
+# Curah hujan dari CHIRPS
 def get_rainfall(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
@@ -95,20 +93,20 @@ def get_rainfall(lat, lon):
 
     image = collection.mean()
     val = sample_gee_value(image, 'precipitation', point, scale=5000)
-    if val is not None:
-        return round(val, 2)
-    return None
+    return round(val, 2) if val is not None else None
 
-# Endpoint utama API
+# Endpoint utama
 @app.route('/extract', methods=['GET'])
 def extract():
     try:
         lat = float(request.args.get('lat'))
-        lon = float(request.args.get('lon'))
+        lon = float(request.args.get('lng'))
 
-        # Validasi input koordinat
         if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
             return jsonify({'error': 'Koordinat tidak valid.'}), 400
+
+        if not is_land(lat, lon):
+            return jsonify({'error': 'Titik berada di laut. Tidak ada data lingkungan.'}), 400
 
         response = {
             'ndvi': get_landsat_ndvi(lat, lon),
@@ -120,6 +118,7 @@ def extract():
         return jsonify(response)
 
     except Exception as e:
+        print(f"Error in /extract: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

@@ -799,7 +799,7 @@
     // Function untuk mengambil data lingkungan dari server
     function fetchEnvironmentalData(lat, lng) {
         // Simulasi API call - ganti dengan fetch ke endpoint Laravel
-        fetch(`http://127.0.0.1:5000/extract??lat=${lat}&lng=${lng}`, {
+        fetch(`http://127.0.0.1:5000/extract?lat=${lat}&lng=${lng}`, {
             method: 'GET',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -808,32 +808,38 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                // Update form fields dengan data dari server
-                document.getElementById("vegetation").value = data.data.ndvi;
-                document.getElementById("water").value = data.data.ndwi;
-                document.getElementById("topography").value = data.data.dsm;
-                document.getElementById("climate").value = data.data.rainfall;
+            console.log("Response from Flask:", data); // ← debug output
+            if (!data.error && data.ndvi != null && data.ndwi != null && data.dsm != null && data.rainfall != null) {
+                // Update form fields
+                document.getElementById("vegetation").value = data.ndvi !== null ? data.ndvi : '';
+                document.getElementById("water").value = data.ndwi !== null ? data.ndwi : '';
+                document.getElementById("topography").value = data.dsm !== null ? data.dsm : '';
+                document.getElementById("climate").value = data.rainfall !== null ? data.rainfall : '';
 
-                // Update preview data
-                document.getElementById("previewVegetation").textContent = data.data.ndvi;
-                document.getElementById("previewWater").textContent = data.data.ndwi;
-                document.getElementById("previewTopography").textContent = data.data.dsm;
-                document.getElementById("previewClimate").textContent = data.data.rainfall + " mm";
+                document.getElementById("previewVegetation").textContent = data.ndvi !== null ? data.ndvi : 'N/A';
+                document.getElementById("previewWater").textContent = data.ndwi !== null ? data.ndwi : 'N/A';
+                document.getElementById("previewTopography").textContent = data.dsm !== null ? data.dsm + " m" : 'N/A';
+                document.getElementById("previewClimate").textContent = data.rainfall !== null ? data.rainfall + " mm" : 'N/A';
 
-                // Show data preview
                 document.getElementById("dataPreview").style.display = 'block';
-
-                // Update status
                 mapStatus.textContent = 'Data berhasil diambil';
                 statusIndicator.style.background = '#00f2fe';
             } else {
-                // Handle error
-                alert('Gagal mengambil data lingkungan: ' + data.message);
-                mapStatus.textContent = 'Gagal mengambil data';
+                // Jika error dari backend
+                alert('Gagal mengambil data lingkungan: ' + data.error);
+                document.getElementById("dataPreview").style.display = 'none';
+                mapStatus.textContent = 'Titik tidak valid (kemungkinan di laut)';
                 statusIndicator.style.background = '#ff9a9e';
+
+                // Kosongkan input
+                document.getElementById("vegetation").value = '';
+                document.getElementById("water").value = '';
+                document.getElementById("topography").value = '';
+                document.getElementById("climate").value = '';
             }
         })
+
+
         .catch(error => {
             console.error('Error:', error);
             // Fallback dengan data simulasi

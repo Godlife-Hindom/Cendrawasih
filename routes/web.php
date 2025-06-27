@@ -33,8 +33,8 @@ Route::middleware(['auth', 'is_pimpinan'])->prefix('pimpinan')->group(function (
     Route::post('/reports/{id}/evaluate', [ReportController::class, 'evaluate'])->name('reports.evaluate');
     Route::get('/pimpinan/laporan', [PimpinanController::class, 'laporan'])->name('pimpinan.laporan');
     Route::delete('/pimpinan/laporan/{id}', [PimpinanController::class, 'deleteLaporan'])->name('pimpinan.deleteLaporan');
-    Route::get('/feedback', [FeedbackController::class, 'form'])->name('pimpinan.feedback.form');
-    Route::post('/feedback', [FeedbackController::class, 'store'])->name('pimpinan.feedback.store');
+    Route::get('/feedback', [PimpinanController::class, 'feedbackForm'])->name('pimpinan.feedback');
+    Route::post('/feedback', [PimpinanController::class, 'submitFeedback'])->name('pimpinan.feedback.store');
 });
 
 
@@ -66,6 +66,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/laporan/semua/{id}', [LaporanController::class, 'showByUser'])->name('admin.laporan.semua');
     Route::delete('/laporan/semua/{id}', [LaporanController::class, 'destroy'])->name('admin.laporan.destroy');
     Route::delete('/admin/users/{id}', [DashboardController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/feedback', [DashboardController::class, 'feedbackForm'])->name('feedback.form');
+    Route::post('/feedback', [DashboardController::class, 'submitFeedback'])->name('feedback.store');
 
     //Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.show');
 

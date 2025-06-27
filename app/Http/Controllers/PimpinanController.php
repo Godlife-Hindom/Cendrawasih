@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\Criteria;
 use App\Models\Subcriteria;
 use App\Models\Laporan;
+use App\Models\Feedback;
 use App\Services\ARASService;
 
 class PimpinanController extends Controller
@@ -173,4 +174,42 @@ class PimpinanController extends Controller
 
         return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
     }
+
+    public function feedbackForm()
+{
+    return view('pimpinan.feedback');
+}
+
+public function submitFeedback(Request $request)
+{
+    $sus = $request->input('sus');
+
+    // Validasi: pastikan semua pertanyaan dijawab
+    if (!is_array($sus) || count($sus) < 10) {
+        return redirect()->back()->with('error', 'Semua pertanyaan harus dijawab.');
+    }
+
+    // Hitung skor SUS
+    $totalScore = 0;
+    foreach ($sus as $index => $value) {
+        $value = (int) $value;
+        if (($index + 1) % 2 === 1) {
+            $totalScore += $value - 1;
+        } else {
+            $totalScore += 5 - $value;
+        }
+    }
+    $finalScore = $totalScore * 2.5;
+
+    // Simpan ke tabel feedback
+    Feedback::create([
+        'user_id' => auth()->id(), // jika login
+        'responses' => json_encode([
+            'answers' => $sus,
+            'score' => $finalScore
+        ])
+    ]);
+
+    return redirect()->route('pimpinan.dashboard')->with('success', 'Terima kasih atas feedback Anda!');
+}
 }

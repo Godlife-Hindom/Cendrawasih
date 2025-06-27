@@ -47,14 +47,14 @@
                     </button>
                     <button class="control-btn" id="showCukup" data-category="Cukup">
                         <span class="btn-icon">🟡</span>
-                        Baik
+                        Cukup
                     </button>
                     <button class="control-btn" id="showKurang" data-category="Kurang">
                         <span class="btn-icon">🟠</span>
                         Kurang
                     </button>
                     <button class="control-btn" id="showBuruk" data-category="Buruk">
-                        <span class="btn-icon">⚫</span>
+                        <span class="btn-icon">🔴</span>
                         Buruk
                     </button>
                 </div>
@@ -413,9 +413,9 @@
 
 .legend-marker.sangat-baik { background: var(--success-color); }
 .legend-marker.baik { background: #4299e1; }
-.legend-marker.cukup-baik { background: #ecc94b; }
+.legend-marker.cukup { background: #ecc94b; }
 .legend-marker.kurang { background: var(--warning-color); }
-.legend-marker.buruk { background: #000000; }
+.legend-marker.buruk { background: var(--danger-color); }
 
 .legend-label {
     flex: 1;
@@ -652,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'Baik': return '#4299e1';
             case 'Cukup': return '#ecc94b';
             case 'Kurang': return '#ed8936';
-            case 'Buruk': return '#000000';
+            case 'Buruk': return '#f56565';
             default: return '#000000';
         }
     }

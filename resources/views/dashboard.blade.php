@@ -285,6 +285,17 @@
                                 <button onclick="confirmSendReport({{ $selectedUserId }})" class="btn btn-primary btn-lg flex-fill">
                                     <i class="bi bi-send-check-fill me-2"></i>Kirim Laporan
                                 </button>
+
+                                @php
+                                    $hasFilled = \App\Models\Feedback::where('user_id', Auth::id())->exists();
+                                @endphp
+
+                                @if (!$hasFilled)
+                                    <a href="{{ route('feedback.form') }}" 
+                                    class="btn btn-danger btn-lg rounded-pill px-4">
+                                        <i class="bi bi-chat-left-dots-fill me-2"></i>Feedback SUS
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endif
