@@ -26,6 +26,9 @@ class PimpinanController extends Controller
         $alternatives = $alternativeModels->toArray();
 
         $criteria = Criteria::all();
+        $subcriteria = Subcriteria::all();
+        $laporan = Laporan::all();
+        $report = Report::all();
         $weights = [];
         foreach ($criteria as $c) {
             $weights[strtolower($c->name)] = $c->weight;
@@ -53,6 +56,8 @@ class PimpinanController extends Controller
             'topAlternatives' => $topAlternatives,
             'alternativesCount' => $alternativeModels->count(),
             'criteriaCount' => $criteria->count(),
+            'subcriteriaCount' => $subcriteria->count(),
+            'reportCount' => $report->count(),
             'laporanCount' => Laporan::count(),
             'laporan' => Report::where('user_id', $userId)->latest()->first(),
             'selectedUserId' => $userId,

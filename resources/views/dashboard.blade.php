@@ -2,6 +2,19 @@
 
 @section('content')
 <div class="container-fluid py-4">
+    {{-- Toast Notification - Perbaikan --}}
+@if(session('success'))
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;" id="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
     {{-- Header Section --}}
     <div class="row mb-4">
         <div class="col-12">
@@ -509,6 +522,37 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Enhanced Toast Animation
+    @if(session('success'))
+        const toastElement = document.getElementById('successToast');
+        if (toastElement) {
+            // Inisialisasi Bootstrap Toast
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 4000
+            });
+
+            // Set initial state
+            toastElement.style.transform = 'translateX(100%)';
+            toastElement.style.opacity = '0';
+            toastElement.style.transition = 'transform 0.5s ease-out, opacity 0.3s ease-in';
+
+            // Show toast immediately
+            toast.show();
+
+            // Animate in after short delay
+            setTimeout(() => {
+                toastElement.style.transform = 'translateX(0)';
+                toastElement.style.opacity = '1';
+            }, 100);
+
+            // Optional: Add slide out animation when hiding
+            toastElement.addEventListener('hidden.bs.toast', function () {
+                toastElement.style.transform = 'translateX(100%)';
+                toastElement.style.opacity = '0';
+            });
+        }
+    @endif
     // Chart Configuration
     @if (count($topAlternatives) > 0)
     const ctx = document.getElementById('scoreChart').getContext('2d');
