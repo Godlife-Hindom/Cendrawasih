@@ -415,7 +415,7 @@
                     Dashboard <span class="text-warning">Pimpinan</span>
                 </h1>
                 <p class="lead mb-0 opacity-90">
-                    Sistem Pendukung Keputusan Penangkaran Cendrawasih - Monitoring & Evaluasi Real-time
+                    Sistem Pendukung Keputusan Penangkaran Cenderawasih - Monitoring & Evaluasi Real-time
                 </p>
             </div>
             <div class="col-lg-4 text-end">
@@ -601,7 +601,7 @@
         <div class="card-header text-center py-4">
             <h3 class="mb-0 fw-bold">
                 <i class="bi bi-trophy-fill me-2 text-warning"></i>
-                Top 5 Lokasi Terbaik Penangkaran Cendrawasih
+                Top 5 Lokasi Terbaik Penangkaran Cenderawasih
             </h3>
             <small class="opacity-75">Berdasarkan Metode ARAS (Additive Ratio Assessment)</small>
         </div>

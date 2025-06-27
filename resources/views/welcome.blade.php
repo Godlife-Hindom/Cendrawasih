@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPK Cendrawasih</title>
+  <title>SPK Cenderawasih</title>
   <!-- Favicon -->
   <link rel="icon" href="{{ asset('images/pp.png') }}" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -170,7 +170,7 @@
   <nav class="fixed top-0 w-full z-50 glass" data-aos="fade-down">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
-        <div class="text-xl font-bold text-gradient">SPK Cendrawasih</div>
+        <div class="text-xl font-bold text-gradient">SPK Cenderawasih</div>
         <div class="hidden md:flex space-x-8">
           <a href="#home" class="hover:text-blue-600 transition-colors">Beranda</a>
           <a href="#fitur" class="hover:text-blue-600 transition-colors">Fitur</a>
@@ -219,11 +219,11 @@
       <div class="relative">
         <div class="absolute inset-0 pulse-ring bg-blue-200 rounded-full opacity-20"></div>
         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold glow tracking-wide relative z-10">
-          SPK CENDRAWASIH
+          SPK CENDERAWASIH
         </h1>
       </div>
       <p class="text-gray-700 text-base sm:text-lg md:text-xl mt-4 max-w-2xl mx-auto leading-relaxed">
-        Sistem Pendukung Keputusan Penangkaran Burung Cendrawasih berbasis Metode ARAS dan GIS
+        Sistem Pendukung Keputusan Penangkaran Burung Cenderawasih berbasis Metode ARAS dan GIS
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
         <a href="/login" class="btn-hover bg-green-200 hover:bg-blue-300 text-black px-8 py-3 rounded-full font-semibold transition-all shadow-lg">
@@ -276,7 +276,7 @@
         <div class="text-4xl sm:text-5xl mb-4 floating-icons" style="animation-delay: 1s;">🌿</div>
         <h3 class="text-lg sm:text-xl font-semibold mb-3 group-hover:text-blue-700 transition-colors">Pendekatan Berkelanjutan</h3>
         <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
-          Memastikan konservasi spesies cendrawasih dengan pendekatan berbasis data lingkungan.
+          Memastikan konservasi spesies cenderawasih dengan pendekatan berbasis data lingkungan.
         </p>
         <div class="mt-4 h-1 bg-gradient-to-r from-blue-400 to-green-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
       </div>
@@ -330,7 +330,7 @@
         <div class="floating-icons" style="animation-delay: 0.6s;"></div>
       </div>
       <p class="text-sm text-gray-500">
-        &copy; 2025 SPK Penangkaran Cendrawasih - Made by GNAH
+        &copy; 2025 SPK Penangkaran Cenderawasih - Made by GNAH
       </p>
     </footer>
   </div>

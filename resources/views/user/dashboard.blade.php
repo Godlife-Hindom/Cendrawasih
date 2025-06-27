@@ -34,7 +34,7 @@
                 Sistem Pendukung Keputusan
             </h1>
             <h3 class="text-secondary fw-semibold mb-3 animate__animated animate__fadeInUp animate__delay-1s">
-                Penentuan Lokasi Penangkaran Burung Cendrawasih
+                Penentuan Lokasi Penangkaran Burung Cenderawasih
             </h3>
             <div class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill fs-6 animate__animated animate__fadeInUp animate__delay-2s">
                 <i class="bi bi-cpu-fill me-2"></i>Metode ARAS & GIS

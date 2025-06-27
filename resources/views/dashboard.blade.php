@@ -29,7 +29,7 @@
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} | Dashboard Admin
                             </p>
-                            <h4 class="fw-light mb-3 opacity-90">Penangkaran Cendrawasih Kabupaten Fakfak</h4>
+                            <h4 class="fw-light mb-3 opacity-90">Penangkaran Cenderawasih Kabupaten Fakfak</h4>
                             <p class="mb-0 opacity-75">Sistem Pendukung Keputusan berbasis Metode ARAS & Visualisasi GIS</p>
                         </div>
                         <div class="col-md-4 text-end d-none d-md-block">
@@ -464,7 +464,7 @@
                             </div>
                             <p class="mb-0 opacity-90 fs-6">
                                 Sistem Pendukung Keputusan ini dirancang khusus untuk membantu dalam menentukan lokasi optimal 
-                                penangkaran burung Cendrawasih di Kabupaten Fakfak. Menggunakan <strong>Metode ARAS (Additive Ratio Assessment)</strong> 
+                                penangkaran burung Cenderawasih di Kabupaten Fakfak. Menggunakan <strong>Metode ARAS (Additive Ratio Assessment)</strong> 
                                 yang terintegrasi dengan teknologi <strong>Geographic Information System (GIS)</strong> untuk memberikan 
                                 rekomendasi lokasi terbaik berdasarkan analisis multi-kriteria yang komprehensif.
                             </p>

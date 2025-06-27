@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login SPK Cendrawasih</title>
+    <title>Login SPK Cenderawasih</title>
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/pp.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -112,7 +112,7 @@
                 <img src="{{ asset('images/pp.png') }}" class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full mx-auto shadow-lg relative z-10 logo-bounce hover:scale-110 transition-all duration-300" alt="Cendrawasih">
             </div>
             <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mt-4">Selamat Datang</h2>
-            <p class="text-gray-500 text-xs sm:text-sm md:text-base">Sistem SPK Penangkaran Cendrawasih</p>
+            <p class="text-gray-500 text-xs sm:text-sm md:text-base">Sistem SPK Penangkaran Cenderawasih</p>
         </div>
 
         <form method="POST" action="{{ route('login') }}" class="space-y-4 sm:space-y-6 relative z-10">

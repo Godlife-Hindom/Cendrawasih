@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SPK Penangkaran Cendrawasih</title>
+    <title>SPK Penangkaran Cenderawasih</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/pp.png') }}" type="image/png">

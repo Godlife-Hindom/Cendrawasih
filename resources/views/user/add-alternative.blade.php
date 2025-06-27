@@ -8,7 +8,7 @@
             <i class="bi bi-geo-alt-fill me-3"></i>
             Tambah Lokasi Baru
         </h1>
-        <p class="page-subtitle">Tentukan lokasi terbaik untuk penangkaran Cendrawasih dengan data lengkap</p>
+        <p class="page-subtitle">Tentukan lokasi terbaik untuk penangkaran Cenderawasih dengan data lengkap</p>
     </div>
 
     <div class="row justify-content-center">
