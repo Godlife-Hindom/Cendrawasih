@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import ee
+import json
 
 app = Flask(__name__)
 CORS(app)  # ← penting agar bisa diakses dari Laravel
 
-# Inisialisasi Earth Engine
-ee.Initialize(project='ee-godlife')
+# Inisialisasi Earth Engine dengan Service Account
+service_account = 'earthengine-service@ee-godlife.iam.gserviceaccount.com'  # Ganti dengan email SA kamu
+key_file = '/var/www/Cendrawasih/python/ee-godlife-46d35f9d9fcd.json'        # Pastikan path benar
+credentials = ee.ServiceAccountCredentials(service_account, key_file)
+ee.Initialize(credentials)
 
 # Cek apakah titik ada di daratan (gunakan batas negara)
 def is_land(lat, lon):
