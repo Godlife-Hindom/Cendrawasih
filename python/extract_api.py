@@ -22,70 +22,6 @@ def is_land(lat, lon):
         print(f"Error checking land: {e}")
         return False
 
-# Cek apakah titik berada di lingkungan alami (bukan bangunan/jalan)
-def is_natural_environment(lat, lon):
-    try:
-        point = ee.Geometry.Point([lon, lat])
-        
-        # Dynamic World untuk label
-        dw_collection = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1") \
-            .filterBounds(point) \
-            .filterDate('2024-01-01', '2024-12-31') \
-            .select('label')
-
-        if dw_collection.size().getInfo() == 0:
-            print("Tidak ada data Dynamic World")
-            return False
-
-        mode_image = dw_collection.reduce(ee.Reducer.mode())
-        sampled = mode_image.sample(region=point, scale=10).first()
-        if sampled is None:
-            print("Sampling Dynamic World gagal")
-            return False
-
-        label = sampled.get("label_mode").getInfo()
-        print(f"Label DW: {label}")
-
-        built_labels = ["built area", "bare", "water"]
-        if label in built_labels:
-            print("Titik berada di area buatan dari Dynamic World")
-            return False
-
-        # Tambahan pengecekan NDVI dari Landsat
-        landsat = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
-            .filterDate('2024-01-01', '2024-12-31') \
-            .filterBounds(point) \
-            .filter(ee.Filter.lt('CLOUD_COVER', 60)) \
-            .map(lambda img: img.updateMask(img.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))
-
-        if landsat.size().getInfo() == 0:
-            print("Tidak ada citra Landsat")
-            return False
-
-        median = landsat.median()
-        sr_b5 = median.select('SR_B5').multiply(0.0000275).add(-0.2)
-        sr_b4 = median.select('SR_B4').multiply(0.0000275).add(-0.2)
-        ndvi = sr_b5.subtract(sr_b4).divide(sr_b5.add(sr_b4)).rename('NDVI')
-        
-        sample = ndvi.sample(region=point, scale=30).first()
-        if sample is None:
-            print("NDVI tidak bisa disampling")
-            return False
-
-        ndvi_value = sample.get('NDVI').getInfo()
-        print(f"NDVI value: {ndvi_value}")
-
-        # NDVI rendah artinya bukan vegetasi
-        if ndvi_value is None or ndvi_value < 0.4:
-            print("NDVI terlalu rendah, kemungkinan besar buatan manusia")
-            return False
-
-        return True
-
-    except Exception as e:
-        print(f"Error checking natural environment: {e}")
-        return False
-
 # Sampling GEE
 def sample_gee_value(image, band, point, scale):
     try:
@@ -173,9 +109,6 @@ def extract():
 
         if not is_land(lat, lon):
             return jsonify({'error': 'Titik berada di laut. Tidak ada data lingkungan.'}), 400
-
-        if not is_natural_environment(lat, lon):
-            return jsonify({'error': 'Titik berada di area buatan atau tidak ada lingkungan alami.'}), 400
 
         response = {
             'ndvi': get_landsat_ndvi(lat, lon),
