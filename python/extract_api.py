@@ -26,26 +26,28 @@ def is_land(lat, lon):
 def is_natural_environment(lat, lon):
     try:
         point = ee.Geometry.Point([lon, lat])
-        image = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1") \
+        collection = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1") \
             .filterBounds(point) \
             .filterDate('2024-01-01', '2024-12-31') \
-            .first()
+            .select('label')
 
-        if image is None:
-            print("Tidak ada citra Dynamic World")
+        if collection.size().getInfo() == 0:
+            print("Tidak ada data Dynamic World di lokasi ini")
             return False
 
-        land_cover = image.select("label")
-        sampled = land_cover.sample(region=point, scale=10).first()
+        # Hitung modus (label paling sering muncul)
+        mode_image = collection.reduce(ee.Reducer.mode())
+        sampled = mode_image.sample(region=point, scale=10).first()
         if sampled is None:
             return False
 
-        label = sampled.get("label").getInfo()
-        print(f"Land cover label: {label}")
+        label = sampled.get("label_mode").getInfo()
+        print(f"Label lingkungan: {label}")
 
-        # Label lingkungan alami
-        natural_labels = ["trees", "grass", "shrubland", "wetlands", "cropland", "snow and ice"]
-        return label in natural_labels
+        # Hanya tolak kalau termasuk area buatan (built area atau jalan)
+        built_labels = ["built area", "bare", "water"]
+
+        return label not in built_labels
     except Exception as e:
         print(f"Error checking natural environment: {e}")
         return False
