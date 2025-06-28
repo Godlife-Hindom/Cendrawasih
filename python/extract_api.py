@@ -4,15 +4,15 @@ import ee
 import json
 
 app = Flask(__name__)
-CORS(app)  # ← penting agar bisa diakses dari Laravel
+CORS(app)
 
-# Inisialisasi Earth Engine dengan Service Account
-service_account = 'earthengine-service@ee-godlife.iam.gserviceaccount.com'  # Ganti dengan email SA kamu
-key_file = '/var/www/Cendrawasih/python/ee-godlife-46d35f9d9fcd.json'        # Pastikan path benar
+# Inisialisasi Earth Engine
+service_account = 'earthengine-service@ee-godlife.iam.gserviceaccount.com'
+key_file = '/var/www/Cendrawasih/python/ee-godlife-46d35f9d9fcd.json'
 credentials = ee.ServiceAccountCredentials(service_account, key_file)
 ee.Initialize(credentials)
 
-# Cek apakah titik ada di daratan (gunakan batas negara)
+# Cek apakah titik ada di daratan
 def is_land(lat, lon):
     try:
         point = ee.Geometry.Point([lon, lat])
@@ -22,7 +22,37 @@ def is_land(lat, lon):
         print(f"Error checking land: {e}")
         return False
 
-# Fungsi sampling nilai pixel
+# Cek apakah titik berada di lingkungan alami (bukan bangunan/jalan)
+def is_natural_environment(lat, lon):
+    try:
+        point = ee.Geometry.Point([lon, lat])
+        collection = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1") \
+            .filterBounds(point) \
+            .filterDate('2024-01-01', '2024-12-31') \
+            .select('label')
+
+        if collection.size().getInfo() == 0:
+            print("Tidak ada data Dynamic World di lokasi ini")
+            return False
+
+        # Hitung modus (label paling sering muncul)
+        mode_image = collection.reduce(ee.Reducer.mode())
+        sampled = mode_image.sample(region=point, scale=10).first()
+        if sampled is None:
+            return False
+
+        label = sampled.get("label_mode").getInfo()
+        print(f"Label lingkungan: {label}")
+
+        # Hanya tolak kalau termasuk area buatan (built area atau jalan)
+        built_labels = ["built area", "bare", "water"]
+
+        return label not in built_labels
+    except Exception as e:
+        print(f"Error checking natural environment: {e}")
+        return False
+
+# Sampling GEE
 def sample_gee_value(image, band, point, scale):
     try:
         img = image.select(band)
@@ -30,26 +60,21 @@ def sample_gee_value(image, band, point, scale):
         if sample is None:
             return None
         val = sample.get(band)
-        if val is None:
-            return None
-        return val.getInfo()
+        return val.getInfo() if val is not None else None
     except Exception as e:
         print(f"Error sampling band {band}: {e}")
         return None
 
-# ✅ NDVI dari Landsat dengan median composite dan mask cloud
+# NDVI dari Landsat 8
 def get_landsat_ndvi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
-
     collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
         .filterDate('2024-01-01', '2024-12-31') \
         .filterBounds(point) \
         .filter(ee.Filter.lt('CLOUD_COVER', 60)) \
-        .map(lambda image: image.updateMask(image.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))  # Mask awan
+        .map(lambda image: image.updateMask(image.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))
 
-    size = collection.size().getInfo()
-    if size == 0:
-        print(f"Tidak ada citra Landsat valid di lokasi lat={lat}, lon={lon}")
+    if collection.size().getInfo() == 0:
         return None
 
     median = collection.median()
@@ -60,7 +85,7 @@ def get_landsat_ndvi(lat, lon):
     val = sample_gee_value(ndvi, 'NDVI', point, scale=30)
     return round(val, 4) if val is not None else None
 
-# ✅ NDWI dari Landsat
+# NDWI
 def get_ndwi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
@@ -76,14 +101,14 @@ def get_ndwi(lat, lon):
     val = sample_gee_value(ndwi_img, 'NDWI', point, scale=30)
     return round(val, 4) if val is not None else None
 
-# ✅ DSM dari SRTM
+# DSM (elevasi)
 def get_dsm(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     image = ee.Image("USGS/SRTMGL1_003")
     val = sample_gee_value(image, 'elevation', point, scale=30)
     return round(val, 2) if val is not None else None
 
-# ✅ Curah hujan dari CHIRPS
+# Curah hujan
 def get_rainfall(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
@@ -97,12 +122,12 @@ def get_rainfall(lat, lon):
     val = sample_gee_value(image, 'precipitation', point, scale=5000)
     return round(val, 2) if val is not None else None
 
-# 🔷 Tambahkan endpoint root agar tidak error 404 saat akses langsung
+# Endpoint root
 @app.route('/')
 def index():
     return jsonify({'message': 'Flask API for SPK Cendrawasih is running.'})
 
-# ✅ Endpoint utama
+# Endpoint utama
 @app.route('/extract', methods=['GET'])
 def extract():
     try:
@@ -114,6 +139,9 @@ def extract():
 
         if not is_land(lat, lon):
             return jsonify({'error': 'Titik berada di laut. Tidak ada data lingkungan.'}), 400
+
+        if not is_natural_environment(lat, lon):
+            return jsonify({'error': 'Titik berada di area buatan atau tidak ada lingkungan alami.'}), 400
 
         response = {
             'ndvi': get_landsat_ndvi(lat, lon),
