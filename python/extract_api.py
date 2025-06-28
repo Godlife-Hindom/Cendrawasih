@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 import ee
 import json
@@ -37,7 +37,7 @@ def sample_gee_value(image, band, point, scale):
         print(f"Error sampling band {band}: {e}")
         return None
 
-# ✅ Perbaikan utama untuk NDVI
+# ✅ NDVI dari Landsat dengan median composite dan mask cloud
 def get_landsat_ndvi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
 
@@ -45,16 +45,14 @@ def get_landsat_ndvi(lat, lon):
         .filterDate('2024-01-01', '2024-12-31') \
         .filterBounds(point) \
         .filter(ee.Filter.lt('CLOUD_COVER', 60)) \
-        .map(lambda image: image.updateMask(image.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))  # Mask cloud
+        .map(lambda image: image.updateMask(image.select('QA_PIXEL').bitwiseAnd(1 << 3).eq(0)))  # Mask awan
 
     size = collection.size().getInfo()
     if size == 0:
         print(f"Tidak ada citra Landsat valid di lokasi lat={lat}, lon={lon}")
         return None
 
-    # Ambil komposit median
     median = collection.median()
-
     sr_b5 = median.select('SR_B5').multiply(0.0000275).add(-0.2)
     sr_b4 = median.select('SR_B4').multiply(0.0000275).add(-0.2)
     ndvi = sr_b5.subtract(sr_b4).divide(sr_b5.add(sr_b4)).rename('NDVI')
@@ -62,7 +60,7 @@ def get_landsat_ndvi(lat, lon):
     val = sample_gee_value(ndvi, 'NDVI', point, scale=30)
     return round(val, 4) if val is not None else None
 
-# NDWI (tanpa kalibrasi karena rasio)
+# ✅ NDWI dari Landsat
 def get_ndwi(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2') \
@@ -78,14 +76,14 @@ def get_ndwi(lat, lon):
     val = sample_gee_value(ndwi_img, 'NDWI', point, scale=30)
     return round(val, 4) if val is not None else None
 
-# DSM dari SRTM
+# ✅ DSM dari SRTM
 def get_dsm(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     image = ee.Image("USGS/SRTMGL1_003")
     val = sample_gee_value(image, 'elevation', point, scale=30)
     return round(val, 2) if val is not None else None
 
-# Curah hujan dari CHIRPS
+# ✅ Curah hujan dari CHIRPS
 def get_rainfall(lat, lon):
     point = ee.Geometry.Point([lon, lat])
     collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
@@ -99,7 +97,12 @@ def get_rainfall(lat, lon):
     val = sample_gee_value(image, 'precipitation', point, scale=5000)
     return round(val, 2) if val is not None else None
 
-# Endpoint utama
+# 🔷 Tambahkan endpoint root agar tidak error 404 saat akses langsung
+@app.route('/')
+def index():
+    return jsonify({'message': 'Flask API for SPK Cendrawasih is running.'})
+
+# ✅ Endpoint utama
 @app.route('/extract', methods=['GET'])
 def extract():
     try:
