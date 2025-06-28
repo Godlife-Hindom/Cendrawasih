@@ -76,7 +76,7 @@ def is_natural_environment(lat, lon):
         print(f"NDVI value: {ndvi_value}")
 
         # NDVI rendah artinya bukan vegetasi
-        if ndvi_value is None or ndvi_value < 0.1:
+        if ndvi_value is None or ndvi_value < 0.4:
             print("NDVI terlalu rendah, kemungkinan besar buatan manusia")
             return False
 
