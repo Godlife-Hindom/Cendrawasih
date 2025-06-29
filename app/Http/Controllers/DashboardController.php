@@ -206,4 +206,12 @@ public function submitFeedback(Request $request)
 
     return redirect()->route('dashboard')->with('success', 'Terima kasih atas feedback Anda!');
 }
+
+public function destroy($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+}
 }
