@@ -212,6 +212,6 @@ public function destroy($id)
     $user = User::findOrFail($id);
     $user->delete();
 
-    return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    return redirect()->route('admin.laporan.index')->with('success', 'User berhasil dihapus.');
 }
 }
