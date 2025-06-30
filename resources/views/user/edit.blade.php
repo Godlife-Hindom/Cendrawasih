@@ -1495,7 +1495,7 @@ map.on('click', function(e) {
 // Function untuk mengambil data lingkungan dari server
 function fetchEnvironmentalData(lat, lng) {
     // Simulasi API call - ganti dengan fetch ke endpoint Laravel
-    fetch(`https://api.spkcendrawasih.site/extract??lat=${lat}&lng=${lng}`, {
+    fetch(`https://api.spkcendrawasih.site/extract?lat=${lat}&lng=${lng}`, {
         method: 'GET',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
