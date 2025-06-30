@@ -198,6 +198,12 @@
                                 Koordinat Lokasi
                             </div>
                             
+                            <!-- Toggle untuk input manual -->
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="manualInputToggle" onclick="toggleManualInput()">
+                                <label class="form-check-label" for="manualInputToggle">Aktifkan Input Manual Koordinat</label>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -207,13 +213,13 @@
                                         </label>
                                         <div class="position-relative">
                                             <input type="text" 
-                                                   id="latitude" 
-                                                   name="latitude" 
-                                                   class="form-control @error('latitude') is-invalid @enderror" 
-                                                   placeholder="Klik pada peta..." 
-                                                   value="{{ old('latitude') }}" 
-                                                   required 
-                                                   readonly>
+                                                id="latitude" 
+                                                name="latitude" 
+                                                class="form-control @error('latitude') is-invalid @enderror" 
+                                                placeholder="Klik pada peta atau isi manual..." 
+                                                value="{{ old('latitude') }}" 
+                                                required 
+                                                readonly>
                                             <i class="bi bi-crosshair input-icon"></i>
                                             @error('latitude')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -230,13 +236,13 @@
                                         </label>
                                         <div class="position-relative">
                                             <input type="text" 
-                                                   id="longitude" 
-                                                   name="longitude" 
-                                                   class="form-control @error('longitude') is-invalid @enderror" 
-                                                   placeholder="Klik pada peta..." 
-                                                   value="{{ old('longitude') }}" 
-                                                   required 
-                                                   readonly>
+                                                id="longitude" 
+                                                name="longitude" 
+                                                class="form-control @error('longitude') is-invalid @enderror" 
+                                                placeholder="Klik pada peta atau isi manual..." 
+                                                value="{{ old('longitude') }}" 
+                                                required 
+                                                readonly>
                                             <i class="bi bi-crosshair input-icon"></i>
                                             @error('longitude')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -749,6 +755,13 @@
     var loadingOverlay = document.querySelector('.loading-overlay');
     var mapStatus = document.querySelector('.map-status span');
     var statusIndicator = document.querySelector('.status-indicator');
+    
+    //Script untuk mengaktifkan/nonaktifkan input manual
+    function toggleManualInput() {
+        const toggle = document.getElementById('manualInputToggle').checked;
+        document.getElementById('latitude').readOnly = !toggle;
+        document.getElementById('longitude').readOnly = !toggle;
+    }
 
     // Set marker jika ada data lama (untuk edit form)
     @if(old('latitude') && old('longitude'))
