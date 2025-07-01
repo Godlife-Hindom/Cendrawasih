@@ -187,7 +187,7 @@
                                         </a>
                                         <a href="{{ route('subcriterias.index', $c->id) }}" class="btn-subcriteria">
                                             <i class="fas fa-sitemap"></i>
-                                            Sub
+                                            Subkriteria
                                         </a>
                                         <form action="{{ route('criteria.destroy', $c) }}" method="POST" class="inline-block">
                                             @csrf @method('DELETE')
