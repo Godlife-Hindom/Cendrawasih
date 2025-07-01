@@ -191,12 +191,12 @@
                                         </a>
                                         <form action="{{ route('criteria.destroy', $c) }}" method="POST" class="inline-block">
                                             @csrf @method('DELETE')
-                                            <button type="button" 
+                                            <!-- <button type="button" 
                                                     onclick="confirmDelete(this)"
                                                     class="btn-delete">
                                                 <i class="fas fa-trash"></i>
                                                 Hapus
-                                            </button>
+                                            </button> -->
                                         </form>
                                     </div>
                                 </td>
