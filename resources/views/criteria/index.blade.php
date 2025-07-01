@@ -243,13 +243,13 @@
                             </a>
                             <form action="{{ route('criteria.destroy', $c) }}" method="POST" style="flex: 1;">
                                 @csrf @method('DELETE')
-                                <button type="button" 
+                                <!-- <button type="button" 
                                         onclick="confirmDelete(this)"
                                         class="btn-delete"
                                         style="width: 100%;">
                                     <i class="fas fa-trash"></i>
                                     Hapus
-                                </button>
+                                </button> -->
                             </form>
                         </div>
                     </div>
