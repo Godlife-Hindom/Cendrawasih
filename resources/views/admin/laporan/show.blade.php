@@ -26,6 +26,23 @@
         </div>
     </div>
 
+    <!-- Info Alert for Auto-Update Feature -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                    <div>
+                        <h6 class="mb-1 fw-semibold">Sistem Auto-Update Laporan</h6>
+                        <p class="mb-0 small">
+                            Ketika user ini mengirimkan laporan baru, laporan sebelumnya akan otomatis terhapus dan digantikan dengan yang terbaru.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if ($laporan->isEmpty())
         <!-- Empty State -->
         <div class="row justify-content-center">
@@ -58,12 +75,16 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 fw-semibold">
                                 <i class="bi bi-list-ul text-primary me-2"></i>
-                                Daftar Laporan ({{ $laporan->count() }} laporan)
+                                Laporan Terbaru ({{ $laporan->count() }} laporan)
                             </h5>
                             <div class="d-flex gap-2">
                                 <span class="badge bg-success-subtle text-success px-3 py-2">
                                     <i class="bi bi-check-circle me-1"></i>
-                                    {{ $laporan->count() }} Laporan Aktif
+                                    Laporan Aktif
+                                </span>
+                                <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                                    <i class="bi bi-arrow-repeat me-1"></i>
+                                    Auto-Update
                                 </span>
                             </div>
                         </div>
@@ -85,8 +106,9 @@
                                             <i class="bi bi-trophy me-1"></i>Peringkat
                                         </th>
                                         <th class="px-4 py-3 fw-semibold text-muted">
-                                            <i class="bi bi-calendar3 me-1"></i>Tanggal Kirim
+                                            <i class="bi bi-calendar3 me-1"></i>Tanggal Update
                                         </th>
+                                        <th class="px-4 py-3 fw-semibold text-muted text-center">Status</th>
                                         <th class="px-4 py-3 fw-semibold text-muted text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -142,7 +164,20 @@
                                                     <small class="text-muted">
                                                         <i class="bi bi-clock me-1"></i>{{ $lap->created_at->format('H:i') }}
                                                     </small>
+                                                    @if($lap->updated_at->gt($lap->created_at))
+                                                        <br>
+                                                        <small class="text-info">
+                                                            <i class="bi bi-arrow-repeat me-1"></i>
+                                                            Diperbarui: {{ $lap->updated_at->format('d M Y H:i') }}
+                                                        </small>
+                                                    @endif
                                                 </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <span class="badge bg-success-subtle text-success px-3 py-2">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    Terbaru
+                                                </span>
                                             </td>
                                             <td class="px-4 py-3 text-center">
                                                 <form action="{{ route('admin.laporan.destroy', $lap->id) }}" method="POST" 
@@ -173,7 +208,7 @@
                             <div class="col-md-6">
                                 <small class="text-muted">
                                     <i class="bi bi-info-circle me-1"></i>
-                                    Menampilkan {{ $laporan->count() }} laporan dari {{ $user->name }}
+                                    Menampilkan {{ $laporan->count() }} laporan terbaru dari {{ $user->name }}
                                 </small>
                             </div>
                             <div class="col-md-6 text-end">
@@ -240,8 +275,12 @@
     flex-shrink: 0;
 }
 
+.alert {
+    border-left: 4px solid #17a2b8;
+}
+
 @media print {
-    .btn, .card-footer, .bg-gradient-primary {
+    .btn, .card-footer, .bg-gradient-primary, .alert {
         display: none !important;
     }
     

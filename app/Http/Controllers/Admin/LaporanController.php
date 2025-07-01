@@ -18,6 +18,10 @@ class LaporanController extends Controller
         // Jika user dipilih, ambil laporannya
         $selectedUser = null;
         $userLaporan = collect();
+        // Update semua status menjadi dibaca
+        Laporan::where('status', 'belum_dibaca')->update(['status' => 'dibaca']);
+
+        $laporans = Laporan::latest()->get();
 
         if ($request->has('user')) {
             $selectedUser = User::find($request->get('user'));
@@ -33,17 +37,22 @@ class LaporanController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $userId = auth()->id();
 
+        // Hapus semua laporan lama dari user yang sama
+        Laporan::where('user_id', $userId)->delete();
+
+        // Simpan laporan baru
         foreach ($data['name'] as $i => $nama) {
             Laporan::create([
-                'user_id' => auth()->id(),
+                'user_id' => $userId,
                 'name' => $nama,
                 'score' => $data['score'][$i],
                 'peringkat' => $data['peringkat'][$i],
             ]);
         }
 
-        return redirect()->route('user.dashboard')->with('success', 'Laporan berhasil dikirim ke admin.');
+        return redirect()->route('user.dashboard')->with('success', 'Laporan berhasil dikirim.');
     }
 
     public function showByUser($id)
@@ -66,5 +75,4 @@ class LaporanController extends Controller
         return redirect()->route('admin.laporan.semua', ['id' => $userId])
                         ->with('success', 'Laporan berhasil dihapus.');
     }
-
 }

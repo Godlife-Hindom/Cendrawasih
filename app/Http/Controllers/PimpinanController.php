@@ -129,57 +129,6 @@ class PimpinanController extends Controller
         else return 'Buruk';
     }
 
-    public function messages()
-    {
-        $reports = Report::with('user')->latest()->get();
-        return view('pimpinan.laporan', compact('reports'));
-    }
-
-    public function viewMessage($id)
-    {
-        $report = Report::with('alternatives')->findOrFail($id);
-        $criteria = Criteria::all();
-        $subcriteria = Subcriteria::with('criteria')->get();
-
-        return view('pimpinan.pesan_detail', compact('report', 'criteria', 'subcriteria'));
-    }
-
-    public function evaluate(Request $request, $id)
-    {
-        $request->validate([
-            'evaluation' => 'required|string',
-            'approval' => 'required|boolean'
-        ]);
-
-        $report = Report::findOrFail($id);
-        $report->evaluation = $request->evaluation;
-        $report->approved = $request->approval;
-        $report->status = $request->approval ? 'approved' : 'rejected';
-        $report->save();
-
-        return redirect()->route('pimpinan.laporan')->with('success', 'Evaluasi berhasil disimpan');
-    }
-
-    public function laporan()
-    {
-        $laporan = Report::with('user')->latest()->get();
-        return view('pimpinan.laporan', compact('laporan'));
-    }
-
-    public function showEvaluateForm($id)
-    {
-        $report = Report::findOrFail($id);
-        return view('pimpinan.evaluasi', compact('report'));
-    }
-
-    public function deleteLaporan($id)
-    {
-        $report = Report::findOrFail($id);
-        $report->delete();
-
-        return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
-    }
-
     public function feedbackForm()
 {
     return view('pimpinan.feedback');

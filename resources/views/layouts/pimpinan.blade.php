@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    @livewireStyles
     <style>
         * {
             margin: 0;
@@ -93,7 +94,6 @@
         .nav-item {
             margin: 0.5rem 1rem;
             border-radius: 12px;
-            overflow: hidden;
             transition: all 0.3s ease;
         }
 
@@ -437,15 +437,7 @@
                     </a>
                 </div>
 
-                <div class="nav-item">
-                    <a href="{{ route('pimpinan.laporan') }}"
-                       class="nav-link {{ request()->is('pimpinan/laporan*') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <span class="nav-text">Laporan</span>
-                    </a>
-                </div>
+                @livewire('notifikasi-laporan-pimpinan')
                 
                 <div class="nav-item">
                     <a href="{{ route('logout') }}"
@@ -565,5 +557,6 @@
         });
     </script>
     @stack('scripts')
+    @livewireScripts
 </body>
 </html>

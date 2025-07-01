@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/pp.png') }}" type="image/png">
-
     <!-- Bootstrap & Icons -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    @livewireStyles
     <style>
         :root {
             --bg-light: #ffffff;
@@ -269,9 +268,8 @@
             <i class="bi bi-geo-alt"></i><span>Alternatif Lokasi</span>
         </a>
 
-        <a href="{{ route('admin.laporan.index') }}" class="{{ request()->routeIs('admin.laporan.index') ? 'active' : '' }}">
-            <i class="bi bi-bell"></i><span>Pemberitahuan Laporan</span>
-        </a>
+        <!-- ✅ Ganti lonceng ini dengan Livewire -->
+        @livewire('notifikasi-laporan')
 
         <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="bi bi-box-arrow-right"></i><span>Logout</span>
@@ -347,5 +345,6 @@
     }
 </script>
 @stack('scripts')
+@livewireScripts
 </body>
 </html>

@@ -65,6 +65,7 @@ class DashboardController extends Controller
 
         // Ambil hasil dari session untuk ditampilkan
         $resultFromSession = session('result', []);
+        $jumlahLaporanBaru = Laporan::where('status', 'belum_dibaca')->count();
 
         return view('dashboard', [
             'alternativesCount' => $alternativeModels->count(),
@@ -75,8 +76,10 @@ class DashboardController extends Controller
             'topAlternatives' => $topAlternatives,
             'users' => $users,
             'selectedUserId' => $userId,
-            'result' => $resultFromSession
+            'result' => $resultFromSession,
+            'jumlahLaporanBaru' => $jumlahLaporanBaru,
         ]);
+        
     }
 
     public function showMap(Request $request)
