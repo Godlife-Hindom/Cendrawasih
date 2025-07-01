@@ -232,7 +232,7 @@
                                 <div class="d-flex align-items-center justify-content-center">
                                     <i class="bi bi-sliders2-vertical fs-4 me-3"></i>
                                     <div class="text-start">
-                                        <div class="fw-semibold">Kelola Kriteria</div>
+                                        <div class="fw-semibold">Kelola Kriteria dan Subkriteria</div>
                                         <small class="text-muted">Atur parameter penilaian</small>
                                     </div>
                                 </div>
