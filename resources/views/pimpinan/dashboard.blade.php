@@ -144,7 +144,7 @@
         border-radius: 15px;
         background: rgba(0,0,0,0.11);
         backdrop-filter: blur(10px);
-        color: white;
+        color: black;
         padding: 12px 20px;
     }
     
