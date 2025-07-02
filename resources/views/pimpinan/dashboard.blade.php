@@ -20,7 +20,7 @@
     .stats-card {
         background: rgba(255,255,255,0.05);
         border: none;
-        color: black;
+        color: white;
     }
     
     .icon-circle {
@@ -136,7 +136,7 @@
         background: rgba(255,255,255,0.05);
         border: none;
         border-radius: 20px;
-        color: black;
+        color: white;
     }
     
     .select-modern {
@@ -144,7 +144,7 @@
         border-radius: 15px;
         background: rgba(0,0,0,0.11);
         backdrop-filter: blur(10px);
-        color: black;
+        color: white;
         padding: 12px 20px;
     }
     
@@ -156,7 +156,7 @@
     
     .select-modern option {
         background: #333;
-        color: black;
+        color: white;
     }
     
     .ranking-badge {
@@ -575,7 +575,7 @@
                     <div class="col-md-8">
                         <label for="user_id" class="form-label fw-semibold mb-3">
                             <i class="bi bi-funnel-fill me-2"></i>
-                            Filter Berdasarkan Pengguna BKSDA
+                            Filter Berdasarkan Pengguna
                         </label>
                         <select name="user_id" id="user_id" class="form-select select-modern" onchange="this.form.submit()">
                             <option value="">🌟 Tampilkan Semua Pengguna</option>
