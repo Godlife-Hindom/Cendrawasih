@@ -136,7 +136,7 @@
         background: rgba(255,255,255,0.05);
         border: none;
         border-radius: 20px;
-        color: white;
+        color: black;
     }
     
     .select-modern {
@@ -156,7 +156,7 @@
     
     .select-modern option {
         background: #333;
-        color: black;
+        color: white;
     }
     
     .ranking-badge {
