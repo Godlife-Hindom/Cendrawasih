@@ -306,7 +306,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <div class="map-container">
                                     <div class="map-header">
                                         <div>
@@ -331,7 +331,7 @@
                                         <div id="selectedCoords">-</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- Form Actions -->
                             <div class="form-actions">
