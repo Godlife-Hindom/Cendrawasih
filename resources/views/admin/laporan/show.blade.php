@@ -185,14 +185,14 @@
                                                       class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" 
+                                                    <!-- <button type="submit" 
                                                             class="btn btn-outline-danger btn-sm rounded-pill px-3"
                                                             data-bs-toggle="tooltip" 
                                                             data-bs-placement="top" 
                                                             title="Hapus Laporan">
                                                         <i class="bi bi-trash3 me-1"></i>
                                                         Hapus
-                                                    </button>
+                                                    </button> -->
                                                 </form>
                                             </td>
                                         </tr>
