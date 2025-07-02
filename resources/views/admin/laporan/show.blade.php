@@ -109,7 +109,6 @@
                                             <i class="bi bi-calendar3 me-1"></i>Tanggal Update
                                         </th>
                                         <th class="px-4 py-3 fw-semibold text-muted text-center">Status</th>
-                                        <!-- <th class="px-4 py-3 fw-semibold text-muted text-center">Aksi</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
