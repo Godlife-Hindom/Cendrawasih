@@ -109,7 +109,7 @@
                                             <i class="bi bi-calendar3 me-1"></i>Tanggal Update
                                         </th>
                                         <th class="px-4 py-3 fw-semibold text-muted text-center">Status</th>
-                                        <th class="px-4 py-3 fw-semibold text-muted text-center">Aksi</th>
+                                        <!-- <th class="px-4 py-3 fw-semibold text-muted text-center">Aksi</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -179,7 +179,7 @@
                                                     Terbaru
                                                 </span>
                                             </td>
-                                            <td class="px-4 py-3 text-center">
+                                            <!-- <td class="px-4 py-3 text-center">
                                                 <form action="{{ route('admin.laporan.destroy', $lap->id) }}" method="POST" 
                                                       onsubmit="return confirm('Apakah Anda yakin ingin menghapus laporan ini? Tindakan ini tidak dapat dibatalkan.')" 
                                                       class="d-inline">
@@ -194,7 +194,7 @@
                                                         Hapus
                                                     </button> -->
                                                 </form>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     @endforeach
                                 </tbody>
