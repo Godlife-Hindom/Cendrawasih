@@ -156,7 +156,7 @@
     
     .select-modern option {
         background: #333;
-        color: white;
+        color: black;
     }
     
     .ranking-badge {
