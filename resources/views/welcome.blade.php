@@ -235,8 +235,8 @@
     <!-- Stats Section -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl" data-aos="fade-up" data-aos-delay="100">
       <div class="glass rounded-xl p-4 text-center card-hover">
-        <div class="text-2xl sm:text-3xl font-bold text-gradient">100%</div>
-        <div class="text-sm text-gray-600">Akurasi</div>
+        <div class="text-2xl sm:text-3xl font-bold text-gradient">Sempurna</div>
+        <div class="text-sm text-gray-600">Kualitas</div>
       </div>
       <div class="glass rounded-xl p-4 text-center card-hover">
         <div class="text-2xl sm:text-3xl font-bold text-gradient">4</div>
