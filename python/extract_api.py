@@ -88,7 +88,8 @@ def get_rainfall(lat, lon):
     if collection.size().getInfo() == 0:
         return None
 
-    image = collection.mean()
+    # Total curah hujan tahunan (mm/tahun)
+    image = collection.sum()
     val = sample_gee_value(image, 'precipitation', point, scale=5000)
     return round(val, 2) if val is not None else None
 
