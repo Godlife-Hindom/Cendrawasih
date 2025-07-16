@@ -306,7 +306,7 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="form-group">
+                            <div class="form-group">
                                 <div class="map-container">
                                     <div class="map-header">
                                         <div>
@@ -331,7 +331,7 @@
                                         <div id="selectedCoords">-</div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- Form Actions -->
                             <div class="form-actions">
@@ -1434,7 +1434,7 @@ body {
 <script>
 
      // Initialize map
-     var map = L.map('map').setView([-2.9, 132.3], 9);
+var map = L.map('map').setView([-2.9, 132.3], 9);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
@@ -1446,18 +1446,50 @@ var loadingOverlay = document.querySelector('.loading-overlay');
 var mapStatus = document.querySelector('.map-status span');
 var statusIndicator = document.querySelector('.status-indicator');
 
-// Set marker jika ada data lama (untuk edit form)
+// Set marker dari data existing alternative (untuk edit form)
+@if($alternative->latitude && $alternative->longitude)
+    const existingLat = {{ $alternative->latitude }};
+    const existingLng = {{ $alternative->longitude }};
+    
+    // Tambahkan marker untuk data existing
+    marker = L.marker([existingLat, existingLng]).addTo(map)
+        .bindPopup(`<strong>{{ $alternative->name }}</strong><br>Lat: ${existingLat}<br>Lng: ${existingLng}`)
+        .openPopup();
+    
+    // Set view ke lokasi existing
+    map.setView([existingLat, existingLng], 12);
+    
+    // Update coordinate display
+    document.getElementById("selectedCoords").textContent = `${existingLat}, ${existingLng}`;
+    document.getElementById("coordinateDisplay").style.display = 'flex';
+    
+    // Update status
+    mapStatus.textContent = 'Lokasi existing dimuat';
+    statusIndicator.style.background = '#00f2fe';
+@endif
+
+// Jika ada old input (setelah validation error), prioritaskan old input
 @if(old('latitude') && old('longitude'))
     const oldLat = {{ old('latitude') }};
     const oldLng = {{ old('longitude') }};
     
-    marker = L.marker([oldLat, oldLng]).addTo(map)
-        .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${oldLat}<br>Lng: ${oldLng}`)
-        .openPopup();
+    // Update marker ke posisi old input
+    if (marker) {
+        marker.setLatLng([oldLat, oldLng]);
+        marker.setPopupContent(`<strong>Lokasi Terpilih</strong><br>Lat: ${oldLat}<br>Lng: ${oldLng}`);
+    } else {
+        marker = L.marker([oldLat, oldLng]).addTo(map)
+            .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${oldLat}<br>Lng: ${oldLng}`)
+            .openPopup();
+    }
     
     map.setView([oldLat, oldLng], 12);
     document.getElementById("selectedCoords").textContent = `${oldLat}, ${oldLng}`;
     document.getElementById("coordinateDisplay").style.display = 'flex';
+    
+    // Update status
+    mapStatus.textContent = 'Lokasi dari input sebelumnya';
+    statusIndicator.style.background = '#fdbb2d';
 @endif
 
 // Map click event
@@ -1473,12 +1505,18 @@ map.on('click', function(e) {
     document.getElementById("selectedCoords").textContent = `${lat}, ${lng}`;
     document.getElementById("coordinateDisplay").style.display = 'flex';
 
+    // Update coordinate preview
+    document.getElementById("latDisplay").textContent = lat;
+    document.getElementById("lngDisplay").textContent = lng;
+
     // Add or move marker
     if (marker) {
         marker.setLatLng([lat, lng]);
+        marker.setPopupContent(`<strong>Lokasi Baru</strong><br>Lat: ${lat}<br>Lng: ${lng}`);
+        marker.openPopup();
     } else {
         marker = L.marker([lat, lng]).addTo(map)
-            .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${lat}<br>Lng: ${lng}`)
+            .bindPopup(`<strong>Lokasi Baru</strong><br>Lat: ${lat}<br>Lng: ${lng}`)
             .openPopup();
     }
 
@@ -1487,38 +1525,28 @@ map.on('click', function(e) {
     mapStatus.textContent = 'Mengambil data...';
     statusIndicator.style.background = '#fdbb2d';
 
-    // Simulate API call untuk mendapatkan data lingkungan
-    // Ganti dengan actual API call ke server Laravel
+    // Fetch environmental data untuk lokasi baru
     fetchEnvironmentalData(lat, lng);
 });
 
 // Function untuk mengambil data lingkungan dari server
 function fetchEnvironmentalData(lat, lng) {
-    // Simulasi API call - ganti dengan fetch ke endpoint Laravel
     fetch(`https://api.spkcendrawasih.site/extract?lat=${lat}&lng=${lng}`, {
-        method: 'GET',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-        }
-    })
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            }
+        })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
-            // Update form fields dengan data dari server
-            document.getElementById("vegetation").value = data.data.ndvi;
-            document.getElementById("water").value = data.data.ndwi;
-            document.getElementById("topography").value = data.data.dsm;
-            document.getElementById("climate").value = data.data.rainfall;
-
-            // Update preview data
-            document.getElementById("previewVegetation").textContent = data.data.ndvi;
-            document.getElementById("previewWater").textContent = data.data.ndwi;
-            document.getElementById("previewTopography").textContent = data.data.dsm;
-            document.getElementById("previewClimate").textContent = data.data.rainfall + " mm";
-
-            // Show data preview
-            document.getElementById("dataPreview").style.display = 'block';
+            console.log("Response from Flask:", data); // ← debug output
+            if (!data.error && data.ndvi != null && data.ndwi != null && data.dsm != null && data.rainfall != null) {
+                // Update form fields
+                document.getElementById("vegetation").value = data.ndvi !== null ? data.ndvi : '';
+                document.getElementById("water").value = data.ndwi !== null ? data.ndwi : '';
+                document.getElementById("topography").value = data.dsm !== null ? data.dsm : '';
+                document.getElementById("climate").value = data.rainfall !== null ? data.rainfall : '';
 
             // Update status
             mapStatus.textContent = 'Data berhasil diambil';
@@ -1558,17 +1586,141 @@ function simulateEnvironmentalData() {
     document.getElementById("water").value = simulatedData.ndwi;
     document.getElementById("topography").value = simulatedData.dsm;
     document.getElementById("climate").value = simulatedData.rainfall;
-
-    document.getElementById("previewVegetation").textContent = simulatedData.ndvi;
-    document.getElementById("previewWater").textContent = simulatedData.ndwi;
-    document.getElementById("previewTopography").textContent = simulatedData.dsm + " m";
-    document.getElementById("previewClimate").textContent = simulatedData.rainfall + " mm";
-
-    document.getElementById("dataPreview").style.display = 'block';
 }
 
+// Function untuk reset ke data original
+function resetToOriginalLocation() {
+    @if($alternative->latitude && $alternative->longitude)
+        const originalLat = {{ $alternative->latitude }};
+        const originalLng = {{ $alternative->longitude }};
+        
+        // Update inputs
+        document.getElementById("latitude").value = originalLat;
+        document.getElementById("longitude").value = originalLng;
+        
+        // Update displays
+        document.getElementById("selectedCoords").textContent = `${originalLat}, ${originalLng}`;
+        document.getElementById("latDisplay").textContent = originalLat;
+        document.getElementById("lngDisplay").textContent = originalLng;
+        
+        // Update marker
+        if (marker) {
+            marker.setLatLng([originalLat, originalLng]);
+            marker.setPopupContent(`<strong>{{ $alternative->name }}</strong><br>Lat: ${originalLat}<br>Lng: ${originalLng}`);
+        } else {
+            marker = L.marker([originalLat, originalLng]).addTo(map)
+                .bindPopup(`<strong>{{ $alternative->name }}</strong><br>Lat: ${originalLat}<br>Lng: ${originalLng}`);
+        }
+        
+        // Set view
+        map.setView([originalLat, originalLng], 12);
+        
+        // Update coordinate display
+        document.getElementById("coordinateDisplay").style.display = 'flex';
+        
+        // Update status
+        mapStatus.textContent = 'Lokasi original dimuat';
+        statusIndicator.style.background = '#00f2fe';
+    @endif
+}
+
+// Geolocation support
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                
+                map.setView([lat, lng], 15);
+                
+                // Update inputs
+                document.getElementById("latitude").value = lat.toFixed(6);
+                document.getElementById("longitude").value = lng.toFixed(6);
+                
+                // Update displays
+                document.getElementById("selectedCoords").textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                document.getElementById("latDisplay").textContent = lat.toFixed(6);
+                document.getElementById("lngDisplay").textContent = lng.toFixed(6);
+                document.getElementById("coordinateDisplay").style.display = 'flex';
+                
+                // Update marker
+                if (marker) {
+                    marker.setLatLng([lat, lng]);
+                    marker.setPopupContent(`<strong>Lokasi Saat Ini</strong><br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`);
+                } else {
+                    marker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup(`<strong>Lokasi Saat Ini</strong><br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`);
+                }
+                
+                marker.openPopup();
+                
+                // Fetch data untuk lokasi baru
+                fetchEnvironmentalData(lat.toFixed(6), lng.toFixed(6));
+            },
+            function(error) {
+                console.error('Geolocation error:', error);
+                alert('Tidak dapat mengakses lokasi Anda. Silakan pilih lokasi secara manual pada peta.');
+            }
+        );
+    } else {
+        alert('Geolocation tidak didukung oleh browser Anda.');
+    }
+}
+
+// Add geolocation button
+const geolocationBtn = document.createElement('button');
+geolocationBtn.type = 'button';
+geolocationBtn.className = 'btn btn-outline-light btn-sm position-absolute';
+geolocationBtn.style.cssText = 'top: 10px; right: 50px; z-index: 1000; border-radius: 5px;';
+geolocationBtn.innerHTML = '<i class="fas fa-crosshairs"></i>';
+geolocationBtn.title = 'Gunakan lokasi saat ini';
+geolocationBtn.onclick = getCurrentLocation;
+
+// Add reset location button
+const resetLocationBtn = document.createElement('button');
+resetLocationBtn.type = 'button';
+resetLocationBtn.className = 'btn btn-outline-warning btn-sm position-absolute';
+resetLocationBtn.style.cssText = 'top: 10px; right: 10px; z-index: 1000; border-radius: 5px;';
+resetLocationBtn.innerHTML = '<i class="fas fa-undo"></i>';
+resetLocationBtn.title = 'Reset ke lokasi original';
+resetLocationBtn.onclick = resetToOriginalLocation;
+
+document.querySelector('.map-container').appendChild(geolocationBtn);
+document.querySelector('.map-container').appendChild(resetLocationBtn);
+
+// Enhanced map controls
+map.on('zoom', function() {
+    const zoom = map.getZoom();
+    if (zoom > 15) {
+        mapStatus.textContent = 'Detail tinggi';
+        statusIndicator.style.background = '#00f2fe';
+    } else if (zoom > 10) {
+        mapStatus.textContent = 'Detail sedang';
+        statusIndicator.style.background = '#fdbb2d';
+    } else {
+        mapStatus.textContent = 'Detail rendah';
+        statusIndicator.style.background = '#ff9a9e';
+    }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Escape to reset to original location
+    if (e.key === 'Escape') {
+        resetToOriginalLocation();
+    }
+    
+    // R key to reset location
+    if (e.key === 'r' || e.key === 'R') {
+        if (!e.ctrlKey && !e.metaKey) { // Avoid conflict with Ctrl+R
+            resetToOriginalLocation();
+        }
+    }
+});
+
 // Form validation
-document.getElementById("locationForm").addEventListener("submit", function(e) {
+document.getElementById("editAlternativeForm").addEventListener("submit", function(e) {
     const lat = document.getElementById("latitude").value;
     const lng = document.getElementById("longitude").value;
     
@@ -1609,8 +1761,8 @@ document.getElementById("locationForm").addEventListener("submit", function(e) {
     }
     
     // Show loading state on submit button
-    const submitBtn = document.querySelector('.btn-submit');
-    submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Menyimpan...';
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
     submitBtn.disabled = true;
 });
 
@@ -1645,160 +1797,7 @@ document.getElementById("climate").addEventListener("input", function() {
     validateInput("climate", 0, 10000);
 });
 
-// Auto-save draft functionality (optional)
-let autoSaveTimeout;
-function autoSaveDraft() {
-    clearTimeout(autoSaveTimeout);
-    autoSaveTimeout = setTimeout(() => {
-        const formData = {
-            name: document.querySelector('input[name="name"]').value,
-            latitude: document.getElementById("latitude").value,
-            longitude: document.getElementById("longitude").value,
-            vegetation: document.getElementById("vegetation").value,
-            water: document.getElementById("water").value,
-            topography: document.getElementById("topography").value,
-            climate: document.getElementById("climate").value
-        };
-        
-        // Save to sessionStorage as fallback
-        try {
-            sessionStorage.setItem('locationFormDraft', JSON.stringify(formData));
-        } catch(e) {
-            console.log('Auto-save not available in this environment');
-        }
-    }, 2000);
-}
-
-// Add auto-save listeners
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', autoSaveDraft);
-});
-
-// Load draft on page load
-window.addEventListener('load', function() {
-    try {
-        const draft = sessionStorage.getItem('locationFormDraft');
-        if (draft && !document.querySelector('input[name="name"]').value) {
-            const data = JSON.parse(draft);
-            
-            // Only load draft if form is empty
-            Object.keys(data).forEach(key => {
-                const input = document.querySelector(`input[name="${key}"], #${key}`);
-                if (input && !input.value && data[key]) {
-                    input.value = data[key];
-                }
-            });
-            
-            // If coordinates exist, add marker
-            if (data.latitude && data.longitude) {
-                const lat = parseFloat(data.latitude);
-                const lng = parseFloat(data.longitude);
-                
-                if (!marker) {
-                    marker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup(`<strong>Draft Lokasi</strong><br>Lat: ${lat}<br>Lng: ${lng}`);
-                    map.setView([lat, lng], 12);
-                    
-                    document.getElementById("selectedCoords").textContent = `${lat}, ${lng}`;
-                    document.getElementById("coordinateDisplay").style.display = 'flex';
-                }
-            }
-        }
-    } catch(e) {
-        console.log('Failed to load draft');
-    }
-});
-
-// Clear draft after successful submission
-window.addEventListener('beforeunload', function() {
-    try {
-        sessionStorage.removeItem('locationFormDraft');
-    } catch(e) {
-        console.log('Failed to clear draft');
-    }
-});
-
-// Geolocation support
-function getCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                map.setView([lat, lng], 15);
-                
-                if (marker) {
-                    marker.setLatLng([lat, lng]);
-                } else {
-                    marker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup(`<strong>Lokasi Saat Ini</strong><br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`)
-                        .openPopup();
-                }
-                
-                document.getElementById("latitude").value = lat.toFixed(6);
-                document.getElementById("longitude").value = lng.toFixed(6);
-                document.getElementById("selectedCoords").textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                document.getElementById("coordinateDisplay").style.display = 'flex';
-                
-                fetchEnvironmentalData(lat.toFixed(6), lng.toFixed(6));
-            },
-            function(error) {
-                console.error('Geolocation error:', error);
-                alert('Tidak dapat mengakses lokasi Anda. Silakan pilih lokasi secara manual pada peta.');
-            }
-        );
-    }
-}
-
-// Add geolocation button (optional - can be added to HTML)
-const geolocationBtn = document.createElement('button');
-geolocationBtn.type = 'button';
-geolocationBtn.className = 'btn btn-outline-light btn-sm position-absolute';
-geolocationBtn.style.cssText = 'top: 10px; right: 10px; z-index: 1000; border-radius: 5px;';
-geolocationBtn.innerHTML = '<i class="bi bi-crosshair2"></i>';
-geolocationBtn.title = 'Gunakan lokasi saat ini';
-geolocationBtn.onclick = getCurrentLocation;
-
-document.querySelector('.map-container').appendChild(geolocationBtn);
-
-// Enhanced map controls
-map.on('zoom', function() {
-    const zoom = map.getZoom();
-    if (zoom > 15) {
-        mapStatus.textContent = 'Detail tinggi';
-        statusIndicator.style.background = '#00f2fe';
-    } else if (zoom > 10) {
-        mapStatus.textContent = 'Detail sedang';
-        statusIndicator.style.background = '#fdbb2d';
-    } else {
-        mapStatus.textContent = 'Detail rendah';
-        statusIndicator.style.background = '#ff9a9e';
-    }
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    // Ctrl/Cmd + S to save
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        document.getElementById('locationForm').dispatchEvent(new Event('submit'));
-    }
-    
-    // Escape to clear selection
-    if (e.key === 'Escape') {
-        if (marker) {
-            map.removeLayer(marker);
-            marker = null;
-            document.getElementById("latitude").value = '';
-            document.getElementById("longitude").value = '';
-            document.getElementById("coordinateDisplay").style.display = 'none';
-            document.getElementById("dataPreview").style.display = 'none';
-        }
-    }
-});
-
-console.log('Location form initialized successfully');
+console.log('Edit location form with map initialized successfully');
 document.addEventListener('DOMContentLoaded', function() {
     // Update indicator bars and text on input change
     const criterionInputs = document.querySelectorAll('.criterion-value');

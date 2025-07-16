@@ -85,7 +85,7 @@ class UserAlternativeController extends Controller
         $scored[] = $row;
     }
 
-    // Step 2: Normalisasi
+    // Step 2: Normalisasi menggunakan MAX (ARAS)
     foreach ($criterias as $kriteriaName => $kriteriaObj) {
         $max = collect($scored)->max($kriteriaName . '_skor');
         \Log::info("🧮 Max {$kriteriaName} skor: {$max}");
