@@ -6,6 +6,7 @@ use App\Models\Report;
 use App\Models\User;
 use App\Models\Criteria;
 use App\Models\Subcriteria;
+use App\Notifications\ReportEvaluatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +28,8 @@ class ReportController extends Controller
         if ($existingReport) {
             // UPDATE laporan yang sudah ada
             $existingReport->update([
-                'title' => $request->title,
-                'content' => $request->content,
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
                 'status' => 'pending', // Reset status ke pending
                 'approved' => null,     // Reset approval
                 'evaluation' => null,   // Reset evaluation
@@ -40,8 +41,8 @@ class ReportController extends Controller
             // CREATE laporan baru jika belum ada
             Report::create([
                 'user_id' => $userId,
-                'title' => $request->title,
-                'content' => $request->content,
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
                 'status' => 'pending',
             ]);
             
@@ -77,6 +78,7 @@ class ReportController extends Controller
     }
 
     // DIMODIFIKASI untuk UPDATE evaluasi tanpa menghapus laporan lain
+    // Proses evaluasi dan update status
     public function evaluate(Request $request, $id)
     {
         $request->validate([
@@ -96,36 +98,23 @@ class ReportController extends Controller
         return redirect()->route('pimpinan.laporan')->with('success', 'Evaluasi berhasil disimpan.');
     }
 
-    // SUDAH BENAR - Menampilkan hanya satu laporan per user
-    public function laporan()
-    {
-        // Menggunakan Collection untuk group by user_id dan ambil yang terbaru
-        $allReports = Report::with('user')->orderBy('created_at', 'desc')->get();
-        
-        // Group by user_id dan ambil hanya yang pertama (terbaru) dari setiap user
-        $laporan = $allReports->groupBy('user_id')->map(function ($userReports) {
-            return $userReports->first();
-        })->values();
-
-        return view('pimpinan.laporan', compact('laporan'));
-    }
-
     public function showEvaluateForm($id)
-    {
-        $report = Report::findOrFail($id);
-        return view('pimpinan.evaluasi', compact('report'));
-    }
+{
+    $report = Report::with('user')->findOrFail($id);
 
-    public function deleteLaporan($id)
-    {
-        $report = Report::findOrFail($id);
-        $userName = $report->user->name;
-        
-        // Hapus laporan yang dipilih saja
-        $report->delete();
+    return view('pimpinan.evaluasi', compact('report'));
+}
 
-        return redirect()->back()->with('success', "Laporan dari {$userName} berhasil dihapus.");
-    }
+    public function laporan()
+{
+    $allReports = Report::with('user')->orderBy('created_at', 'desc')->get();
+
+    $laporan = $allReports->groupBy('user_id')->map(function ($userReports) {
+        return $userReports->first();
+    })->values();
+
+    return view('pimpinan.laporan', compact('laporan'));
+}
 
     // TAMBAHAN: Method untuk menghapus semua laporan dari user tertentu
     public function deleteAllUserReports($userId)
@@ -161,9 +150,9 @@ class ReportController extends Controller
             return response()->json([
                 'has_report' => true,
                 'report' => [
-                    'id' => $report->id,
-                    'title' => $report->title,
-                    'status' => $report->status,
+                    'id' => $report->input('id'),
+                    'title' => $report->input('title'),
+                    'status' => $report->input('status'),
                     'created_at' => $report->created_at->format('d M Y H:i'),
                     'updated_at' => $report->updated_at->format('d M Y H:i'),
                 ]

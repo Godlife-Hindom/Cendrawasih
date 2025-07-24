@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Report;
 use App\Models\Alternative;
 use App\Models\Criteria;
 use App\Models\Subcriteria;
@@ -29,5 +31,23 @@ class UserDashboardController extends Controller
         'result' // penting!
     ));
 }
+
+public function statusLaporan()
+{
+    $userId = Auth::id();
+
+    // Ambil laporan terbaru milik user
+    $report = Report::where('user_id', $userId)->latest()->first();
+
+    if (!$report) {
+        return redirect()->back()->with('warning', 'Belum ada laporan yang dikirim.');
+    }
+
+    // Pastikan data terbaru diambil dari database
+    $report->refresh();
+
+    return view('user.laporan_status', compact('report'));
+}
+
 
 }

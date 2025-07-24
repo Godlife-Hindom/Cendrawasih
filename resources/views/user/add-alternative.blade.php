@@ -744,70 +744,111 @@
 
 <script>
     // Initialize map
-    var map = L.map('map').setView([-2.9, 132.3], 9);
+var map = L.map('map').setView([-2.9, 132.3], 9);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+// --- Basemap Layers ---
+// Basemap: OpenStreetMap
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
 
-    var marker;
-    var loadingOverlay = document.querySelector('.loading-overlay');
-    var mapStatus = document.querySelector('.map-status span');
-    var statusIndicator = document.querySelector('.status-indicator');
-    
-    //Script untuk mengaktifkan/nonaktifkan input manual
-    function toggleManualInput() {
-        const toggle = document.getElementById('manualInputToggle').checked;
-        document.getElementById('latitude').readOnly = !toggle;
-        document.getElementById('longitude').readOnly = !toggle;
+// Basemap: Esri World Imagery (Satelit)
+var esriSat = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: 'Tiles © Esri'
+  }
+);
+
+// Overlay: Label Nama Wilayah & Kota
+var labelBoundariesPlaces = L.tileLayer(
+  'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: '© Esri - Boundaries & Places'
+  }
+);
+
+// Overlay: Label Tempat Penting
+var labelReference = L.tileLayer(
+  'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: '© Esri - Reference Labels'
+  }
+);
+
+// Gabungan Satelit + Label Kota/Wilayah/Tempat Penting
+var esriSatWithLabelsCombined = L.layerGroup([
+  esriSat,
+  labelBoundariesPlaces,
+  labelReference
+]);
+
+// Basemap: Google Hybrid (Satelit + Labels)
+var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+  maxZoom: 20,
+  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+  attribution: '&copy; <a href="https://maps.google.com/">Google Maps</a>'
+});
+
+// Layer Control
+var baseMaps = {
+  "OpenStreetMap": osm,
+  "Satelit": esriSatWithLabelsCombined,
+  "Google Maps (Hybrid)": googleHybrid
+};
+
+L.control.layers(baseMaps).addTo(map);
+
+// --- Marker & UI Logic ---
+var marker;
+var loadingOverlay = document.querySelector('.loading-overlay');
+var mapStatus = document.querySelector('.map-status span');
+var statusIndicator = document.querySelector('.status-indicator');
+
+function toggleManualInput() {
+    const toggle = document.getElementById('manualInputToggle').checked;
+    document.getElementById('latitude').readOnly = !toggle;
+    document.getElementById('longitude').readOnly = !toggle;
+}
+
+@if(old('latitude') && old('longitude'))
+    const oldLat = {{ old('latitude') }};
+    const oldLng = {{ old('longitude') }};
+
+    marker = L.marker([oldLat, oldLng]).addTo(map)
+        .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${oldLat}<br>Lng: ${oldLng}`)
+        .openPopup();
+
+    map.setView([oldLat, oldLng], 12);
+    document.getElementById("selectedCoords").textContent = `${oldLat}, ${oldLng}`;
+    document.getElementById("coordinateDisplay").style.display = 'flex';
+@endif
+
+map.on('click', function(e) {
+    const lat = e.latlng.lat.toFixed(6);
+    const lng = e.latlng.lng.toFixed(6);
+
+    document.getElementById("latitude").value = lat;
+    document.getElementById("longitude").value = lng;
+    document.getElementById("selectedCoords").textContent = `${lat}, ${lng}`;
+    document.getElementById("coordinateDisplay").style.display = 'flex';
+
+    if (marker) {
+        marker.setLatLng([lat, lng]);
+    } else {
+        marker = L.marker([lat, lng]).addTo(map)
+            .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${lat}<br>Lng: ${lng}`)
+            .openPopup();
     }
 
-    // Set marker jika ada data lama (untuk edit form)
-    @if(old('latitude') && old('longitude'))
-        const oldLat = {{ old('latitude') }};
-        const oldLng = {{ old('longitude') }};
-        
-        marker = L.marker([oldLat, oldLng]).addTo(map)
-            .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${oldLat}<br>Lng: ${oldLng}`)
-            .openPopup();
-        
-        map.setView([oldLat, oldLng], 12);
-        document.getElementById("selectedCoords").textContent = `${oldLat}, ${oldLng}`;
-        document.getElementById("coordinateDisplay").style.display = 'flex';
-    @endif
+    loadingOverlay.style.display = 'flex';
+    mapStatus.textContent = 'Mengambil data...';
+    statusIndicator.style.background = '#fdbb2d';
 
-    // Map click event
-    map.on('click', function(e) {
-        const lat = e.latlng.lat.toFixed(6);
-        const lng = e.latlng.lng.toFixed(6);
+    fetchEnvironmentalData(lat, lng);
+});
 
-        // Update coordinate inputs
-        document.getElementById("latitude").value = lat;
-        document.getElementById("longitude").value = lng;
-
-        // Update coordinate display
-        document.getElementById("selectedCoords").textContent = `${lat}, ${lng}`;
-        document.getElementById("coordinateDisplay").style.display = 'flex';
-
-        // Add or move marker
-        if (marker) {
-            marker.setLatLng([lat, lng]);
-        } else {
-            marker = L.marker([lat, lng]).addTo(map)
-                .bindPopup(`<strong>Lokasi Terpilih</strong><br>Lat: ${lat}<br>Lng: ${lng}`)
-                .openPopup();
-        }
-
-        // Show loading
-        loadingOverlay.style.display = 'flex';
-        mapStatus.textContent = 'Mengambil data...';
-        statusIndicator.style.background = '#fdbb2d';
-
-        // Simulate API call untuk mendapatkan data lingkungan
-        // Ganti dengan actual API call ke server Laravel
-        fetchEnvironmentalData(lat, lng);
-    });
 
     // Function untuk mengambil data lingkungan dari server
     function fetchEnvironmentalData(lat, lng) {

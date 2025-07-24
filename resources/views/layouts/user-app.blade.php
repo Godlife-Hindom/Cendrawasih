@@ -656,7 +656,10 @@
     <a href="{{ route('user.criteria.index') }}"><i class="bi bi-sliders"></i> <span>Data Kriteria dan Subkriteria</span></a>
     <a href="{{ url('/user/alternatives') }}"><i class="bi bi-list-task"></i> <span>Data Alternatif</span></a>
     <a href="{{ url('/user/view-map') }}"><i class="bi bi-geo-alt-fill"></i> <span>Peta Rekomendasi</span></a>
-    
+    <a href="{{ route('user.laporan.status') }}">
+    <i class="bi bi-file-earmark-text-fill"></i>
+    <span>Status Laporan</span>
+</a>
 
     <form action="{{ url('/logout') }}" method="POST">
       @csrf

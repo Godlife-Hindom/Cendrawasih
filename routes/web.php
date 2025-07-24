@@ -122,6 +122,7 @@ Route::middleware(['auth', 'is_user'])->prefix('user')->name('user.')->group(fun
     Route::post('/laporan/kirim', [LaporanController::class, 'store'])->name('laporan.kirim')->middleware('auth');
     Route::get('/feedback', [FeedbackController::class, 'form'])->name('feedback.form');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.submit');
+    Route::get('/laporan/status', [UserDashboardController::class, 'statusLaporan'])->name('laporan.status');
     
 });
 

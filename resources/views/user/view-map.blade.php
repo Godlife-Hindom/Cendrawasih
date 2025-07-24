@@ -628,13 +628,59 @@ document.addEventListener('DOMContentLoaded', function() {
         position: 'topleft'
     }).addTo(map);
 
-    // Add tile layer with better styling
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 18,
-        tileSize: 256,
-        zoomOffset: 0
-    }).addTo(map);
+    // Basemap: OpenStreetMap
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Basemap: Esri World Imagery (Satelit)
+var esriSat = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: 'Tiles © Esri'
+  }
+);
+
+// Overlay: Label Nama Wilayah & Kota
+var labelBoundariesPlaces = L.tileLayer(
+  'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: '© Esri - Boundaries & Places'
+  }
+);
+
+// Overlay: Label Tempat Penting
+var labelReference = L.tileLayer(
+  'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: '© Esri - Reference Labels'
+  }
+);
+
+// Gabungan Satelit + Label Kota/Wilayah/Tempat Penting
+var esriSatWithLabelsCombined = L.layerGroup([
+  esriSat,
+  labelBoundariesPlaces,
+  labelReference
+]);
+
+// Basemap: Google Hybrid (Satelit + Labels)
+var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+  maxZoom: 20,
+  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+  attribution: '&copy; <a href="https://maps.google.com/">Google Maps</a>'
+});
+
+// Layer Control
+var baseMaps = {
+  "OpenStreetMap": osm,
+  "Satelit": esriSatWithLabelsCombined,
+  "Google Maps (Hybrid)": googleHybrid
+};
+
+L.control.layers(baseMaps).addTo(map);
+
 
     // Store markers for filtering
     const markers = {};
