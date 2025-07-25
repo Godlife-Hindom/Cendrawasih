@@ -641,6 +641,7 @@
   <!-- AOS Script -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+
    // Initialize map
    const map = L.map('map', {
         zoomControl: false,
@@ -826,6 +827,90 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+    // Pastikan variabel locations tersedia
+    const resultLocations = @json($locations);
+
+    resultLocations.forEach(loc => {
+        const color = getColorByCategory(loc.kategori);
+
+        const marker = L.marker([loc.latitude, loc.longitude], {
+            icon: createEnhancedIcon(color)
+        }).addTo(map);
+
+        const popupContent = `
+            <div style="text-align: center;">
+                <strong>${loc.name}</strong><br>
+                Skor: ${parseFloat(loc.score).toFixed(4)}<br>
+                Kategori: <span style="color:${color}; font-weight:bold;">${loc.kategori}</span>
+            </div>
+        `;
+        marker.bindPopup(popupContent);
+    });
+
+    function getColorByCategory(category) {
+        switch ((category || '').trim()) {
+            case 'Sangat Baik': return '#48bb78';
+            case 'Baik': return '#4299e1';
+            case 'Cukup': return '#ecc94b';
+            case 'Kurang': return '#ed8936';
+            case 'Buruk': return '#f56565';
+            default: return '#999999'; // fallback
+        }
+    }
+
+    function createEnhancedIcon(color) {
+        return L.divIcon({
+            className: "custom-enhanced-icon",
+            html: `
+                <div class="marker-wrapper">
+                    <div class="marker-pulse" style="background: ${color}33;"></div>
+                    <div class="marker-dot" style="background: ${color};"></div>
+                </div>
+            `,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        });
+    }
+
+    const markerStyles = document.createElement('style');
+    markerStyles.textContent = `
+        .custom-enhanced-icon {
+            background: none !important;
+            border: none !important;
+        }
+        .marker-wrapper {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        .marker-pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            animation: markerPulse 2s infinite;
+        }
+        .marker-dot {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        @keyframes markerPulse {
+            0% { transform: scale(0.8); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.3; }
+            100% { transform: scale(0.8); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(markerStyles);
+
     
     // Initialize AOS
     AOS.init({

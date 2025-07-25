@@ -16,6 +16,7 @@ use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserCriteriaController;
+use App\Models\Alternative;
 
 Route::middleware(['auth', 'is_pimpinan'])->prefix('pimpinan')->group(function () {
     Route::get('/dashboard', [PimpinanController::class, 'index'])->name('pimpinan.dashboard');
@@ -75,7 +76,28 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
 // Halaman utama
 Route::get('/', function () {
-    return view('welcome');
+    $alternatives = Alternative::with('user')
+        ->orderByDesc('score')
+        ->get();
+
+    // Hitung ranking berdasarkan skor
+    $ranked = $alternatives->values()->map(function ($item, $index) {
+        $item->ranking = $index + 1;
+        return $item;
+    });
+
+    $locations = $ranked->map(function ($alt) {
+        return [
+            'latitude' => $alt->latitude,
+            'longitude' => $alt->longitude,
+            'score' => $alt->score,
+            'kategori' => $alt->kategori,
+            'name' => $alt->name ?? 'Alternatif',
+            'ranking' => $alt->ranking,
+        ];
+    });
+
+    return view('welcome', ['locations' => $locations]);
 });
 
 // Dashboard Admin (jika kamu punya)

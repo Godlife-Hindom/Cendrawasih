@@ -126,9 +126,12 @@ class UserAlternativeController extends Controller
         $alt = Alternative::find($row['id']);
         $row['latitude'] = $alt->latitude;
         $row['longitude'] = $alt->longitude;
+
         $alt->score = $row['Ki'];
         $kategori = $this->getKategori($row['Ki']);
         $row['kategori'] = $kategori;
+
+        $alt->kategori = $kategori; // ⬅️ Perbaikan inti
         $alt->save();
 
         \Log::info("🏅 {$row['name']} (ID: {$row['id']}), Skor Akhir: {$row['Ki']}, Peringkat: {$row['peringkat']}, Kategori: {$kategori}");
